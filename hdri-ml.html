@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HDRI from Backplate — David Allan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* Lightbox */
+    .lb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); z-index:999; cursor:zoom-out; align-items:center; justify-content:center; }
+    .lb-overlay.open { display:flex; }
+    .lb-overlay img { max-width:92vw; max-height:92vh; object-fit:contain; }
+    .lb-close { position:fixed; top:20px; right:26px; font-size:28px; color:#fff; cursor:pointer; opacity:.7; }
+    .lb-close:hover { opacity:1; }
+    .zoomable { cursor:zoom-in; }
+
+    .img-block { margin: 28px 0; border: 1px solid var(--rule); overflow: hidden; }
+    .img-block img { width: 100%; display: block; }
+    .img-cap { padding: 10px 16px; background: var(--bg-card); border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-light); letter-spacing: 0.06em; }
+
+    /* Comparison grid — tall portrait image, constrained width */
+    .comparison-wrap { margin: 28px auto; border: 1px solid var(--rule); overflow: hidden; max-width: 560px; }
+    .comparison-wrap img { width: 100%; display: block; }
+
+    /* Pig test image — side by side with grid */
+    .results-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 28px 0; }
+
+    /* Video — restrained size */
+    .video-wrap { margin: 28px 0; border: 1px solid var(--rule); overflow: hidden; max-width: 700px; }
+    .video-wrap video { width: 100%; display: block; }
+
+    /* Placeholder */
+    .placeholder { border: 1px dashed var(--rule); padding: 28px 24px; background: var(--bg-card); text-align: center; }
+    .placeholder code { font-family: monospace; font-size: 11px; background: var(--bg); padding: 3px 8px; border: 1px solid var(--rule); color: var(--ink-mid); display: inline-block; margin-top: 8px; }
+    .placeholder-label { font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 6px; }
+
+    /* Architecture link */
+    .arch-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 20px; padding: 10px 20px; border: 1px solid var(--rule); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-mid); text-decoration: none; transition: background .15s, color .15s; }
+    .arch-link:hover { background: var(--ink); color: var(--bg); text-decoration: none; }
+
+    /* Loss table */
+    .loss-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 16px; }
+    .loss-table th { text-align: left; padding: 10px 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); border-bottom: 1px solid var(--rule); }
+    .loss-table td { padding: 10px 14px; color: var(--ink-mid); border-bottom: 1px solid var(--rule); }
+    .loss-table td:first-child { color: var(--ink); font-weight: 500; }
+    .loss-table tr:last-child td { border-bottom: none; }
+    .good { color: #3a7a3a !important; }
+    .bad  { color: #8b3a2a !important; }
+
+    @media (max-width: 640px) {
+      .results-row { grid-template-columns: 1fr; }
+      .comparison-wrap { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">← David Allan</a>
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="job-chain.html">Job Chain</a></li>
+      <li><a href="ves-award.html">Queen Harpy</a></li>
+    </ul>
+  </nav>
+
+  <div class="deep-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">David Allan</a> / Projects / HDRI from Backplate</p>
+      <h1 class="deep-title">HDRI from<br>Backplate</h1>
+      <p class="deep-sub">Pix2Pix · UC Irvine · 2025–2026</p>
+      <p class="deep-lede">A Pix2Pix GAN trained to predict a full 360° HDRI lighting environment from a single backplate photograph.</p>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="wrap">
+
+      <div class="article-block">
+        <p class="block-label">What it does</p>
+        <h2 class="block-heading">Backplate in, HDRI out</h2>
+        <hr class="block-rule">
+        <p class="prose">Given a single flat photograph of a location (the backplate), the model generates a full equirectangular HDRI panorama — a 360° image representing the complete lighting environment of that scene. Input: <strong>128×128 RGB</strong>. Output: <strong>128×256 equirectangular panorama</strong>.</p>
+        <p class="prose" style="margin-top: 14px;">The motivation is practical: in VFX, matching a backplate shot to a 3D object requires a real HDRI captured on set. If you didn't capture one, or can't go back, this is a way to reconstruct a plausible one from the photography you already have.</p>
+      </div>
+
+      <div class="article-block">
+        <p class="block-label">Results</p>
+        <h2 class="block-heading">Outputs</h2>
+        <hr class="block-rule">
+
+        <p class="prose">The L1 reconstruction path is working well — outputs are color-correct and scene-appropriate across a diverse test set (indoor, outdoor, day, night). The adversarial component adds sharpness in theory, but the discriminator has dominated training, so outputs are smooth rather than high-frequency. The underlying scene interpretation — sky type, light direction, approximate intensity — holds up.</p>
+
+        <div class="img-block" style="margin-top: 28px; max-width: 480px;">
+          <img src="assets/images/hdri-backplate/comparison_val_grid.png" alt="Validation grid — Input / Generated / Ground Truth across test set" class="zoomable" onclick="openLB(this)">
+          <p class="img-cap">Full validation grid — Input / Generated HDRI / Ground Truth across diverse test scenes · click to enlarge</p>
+        </div>
+      </div>
+
+      <div class="article-block">
+        <p class="block-label">Training</p>
+        <h2 class="block-heading">Training progress</h2>
+        <hr class="block-rule">
+        <div class="video-wrap">
+          <video controls preload="metadata">
+            <source src="assets/video/training_progress.mp4" type="video/mp4">
+          </video>
+          <p class="img-cap">Generated HDRI quality over training epochs</p>
+        </div>
+      </div>
+
+      <div class="article-block">
+        <p class="block-label">Architecture</p>
+        <h2 class="block-heading">Pix2Pix — U-Net + PatchGAN</h2>
+        <hr class="block-rule">
+        <p class="prose"><strong>Generator (U-Net):</strong> The backplate is first stretched to the target 2:1 panoramic aspect ratio, then encoded through 6 strided convolutional layers down to a 512×2×4 bottleneck — 4,096 values representing the whole scene. The decoder expands back up using transposed convolutions, with skip connections from each encoder layer feeding in spatial detail at each step.</p>
+        <p class="prose" style="margin-top:14px;"><strong>Discriminator (PatchGAN):</strong> Rather than judging the whole image as real or fake, the discriminator scores each 70×70 pixel patch independently (output: 16×33 patch predictions). It sees the backplate and the HDRI together — so it's asking "does this HDRI make sense given this backplate?", not just "does this HDRI look real?".</p>
+        <p class="prose" style="margin-top:14px;"><strong>Training data:</strong> 6,934 backplate+HDRI pairs. Batch size 16, 100 epochs. L1 loss weighted 50× over adversarial loss — pixel accuracy is the dominant signal, adversarial sharpness is secondary.</p>
+
+        <table class="loss-table" style="margin-top:24px;">
+          <tr>
+            <th>Metric</th>
+            <th>Epoch 1</th>
+            <th>Epoch 39</th>
+            <th>Direction</th>
+          </tr>
+          <tr>
+            <td>L1 (reconstruction)</td>
+            <td>0.23</td>
+            <td class="good">0.15</td>
+            <td class="good">↓ improving</td>
+          </tr>
+          <tr>
+            <td>GAN (adversarial)</td>
+            <td>0.40</td>
+            <td class="bad">0.66</td>
+            <td class="bad">↑ discriminator winning</td>
+          </tr>
+          <tr>
+            <td>Discriminator</td>
+            <td>0.31</td>
+            <td class="bad">0.047</td>
+            <td class="bad">Too confident — healthy range: 0.2–0.5</td>
+          </tr>
+        </table>
+
+        <p class="prose" style="margin-top:20px;">The discriminator won the GAN arms race early — its loss collapsed to 0.047, at which point gradients to the generator from the adversarial path became too weak to drive meaningful change. The L1 path compensates, producing correct but blurry outputs. The next architectural change would replace the discriminator with a pre-trained perceptual loss (VGG), which sidesteps the GAN instability entirely while still measuring "does this look like a real image".</p>
+
+        <a href="assets/hdri-architecture.html" target="_blank" class="arch-link">Full architecture diagram →</a>
+
+        <div class="tech-row">
+          <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+          <span class="ti"><img src="assets/images/icons/pytorch.svg" alt="">PyTorch</span>
+          <span class="ti"><img src="assets/images/icons/numpy.svg" alt="">NumPy</span>
+          <span class="ti">Pix2Pix</span>
+          <span class="ti">U-Net</span>
+          <span class="ti">PatchGAN</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="page-nav">
+      <a href="index.html#projects" class="pnav-link">← All Projects</a>
+      <a href="job-chain.html" class="pnav-link">Job Chain →</a>
+    </div>
+  </div>
+
+  <div class="lb-overlay" id="lb" onclick="closeLB()">
+    <span class="lb-close" onclick="closeLB()">✕</span>
+    <img id="lb-img" src="" alt="">
+  </div>
+  <script>
+    function openLB(el) {
+      document.getElementById('lb-img').src = el.src;
+      document.getElementById('lb').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLB() {
+      document.getElementById('lb').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+  </script>
+
+  <footer>
+    <span class="footer-name">David Allan</span>
+    <span>Technical Director · VES Award Winner</span>
+    <span><a href="mailto:david.pal.allan@gmail.com" style="color:inherit;">david.pal.allan@gmail.com</a></span>
+  </footer>
+
+</body>
+</html>

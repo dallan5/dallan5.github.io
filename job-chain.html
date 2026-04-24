@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Chain — David Allan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 24px 0; }
+    .feature { background: var(--bg); padding: 22px; }
+    .feature-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 5px; }
+    .feature-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.65; }
+
+    /* DCC plugin row */
+    .dcc-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 28px 0; }
+    .dcc-card { background: var(--bg); padding: 26px 24px 22px; }
+    .dcc-icon { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .dcc-icon img { width: 20px; height: 20px; }
+    .dcc-name { font-family: var(--font-display); font-size: 20px; font-weight: 700; color: var(--ink); }
+    .dcc-desc { font-size: 13px; color: var(--ink-mid); line-height: 1.65; }
+
+    /* Process table */
+    .process-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 20px; }
+    .process-table th { text-align: left; padding: 10px 14px; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); border-bottom: 1px solid var(--rule); }
+    .process-table td { padding: 10px 14px; color: var(--ink-mid); border-bottom: 1px solid var(--rule); vertical-align: top; }
+    .process-table td:first-child { color: var(--ink); font-weight: 500; white-space: nowrap; min-width: 160px; }
+    .process-table tr:last-child td { border-bottom: none; }
+
+    @media (max-width: 640px) {
+      .feature-grid { grid-template-columns: 1fr; }
+      .dcc-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">← David Allan</a>
+    <ul class="nav-links">
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="hdri-ml.html">HDRI ML</a></li>
+      <li><a href="ves-award.html">Queen Harpy</a></li>
+    </ul>
+  </nav>
+
+  <div class="deep-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">David Allan</a> / Projects / Job Chain</p>
+      <h1 class="deep-title">Job Chain</h1>
+      <p class="deep-sub">Automation Framework · Python · ILP, 2020–2025</p>
+      <p class="deep-lede">A node-based pipeline automation framework I designed and built at ILP — enabling artists to construct and trigger complex, multi-step VFX workflows without writing any code.</p>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="wrap">
+
+      <!-- OVERVIEW -->
+      <div class="article-block">
+        <p class="block-label">What it does</p>
+        <h2 class="block-heading">Overview</h2>
+        <hr class="block-rule">
+        <p class="prose">Job Chain lives inside Houdini as a ROP network. Each node is a step — open a workfile, run a sim, import a publish, submit an output to the render farm. Wire them together and the chain executes in order, with each step waiting for its dependency to complete before starting. No Python required to build or run a chain.</p>
+        <p class="prose" style="margin-top: 14px;">Artists and supervisors build preset chains for common workflows or go fully custom per show. Chains can be submitted directly from Houdini, triggered from a ShotGrid right-click, or called from Python by other tools. On Ronja, a single ShotGrid action delivered a fully groomed, simulated, and lit character render — no TD involvement.</p>
+
+        <div class="feature-grid" style="margin-top: 28px;">
+          <div class="feature">
+            <div class="feature-name">Node-based authoring</div>
+            <p class="feature-desc">Build workflows visually by wiring nodes. No Python required. Each node is a step; connections define dependencies.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Dependency resolution</div>
+            <p class="feature-desc">Steps don't proceed until upstream dependencies are confirmed complete. A light job won't start until anim finishes.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Context-driven</div>
+            <p class="feature-desc">Every chain runs against a ShotGrid entity. Version resolution, publish paths, and file locations are automatic — no manual path entry.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Fallback logic</div>
+            <p class="feature-desc">Nodes define conditional fallbacks: if no workfile is found, display a message and stop. If no input updates exist, skip the sim and continue.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- OVERVIEW DIAGRAM -->
+    <div class="wrap-wide">
+      <div class="diagram-scroll">
+        <img src="assets/images/job-chain/vfx-overview-p1.jpg" alt="Job Chain overview">
+        <p class="diagram-cap">System overview — node graph, submission flow, and dependency model</p>
+      </div>
+    </div>
+
+    <div class="wrap" style="margin-top: 48px;">
+
+      <!-- DCC PLUGINS -->
+      <div class="article-block">
+        <p class="block-label">Modular design</p>
+        <h2 class="block-heading">Three DCC plugins</h2>
+        <hr class="block-rule">
+        <p class="prose">Job Chain is built around a software plugin system. The graph definition is DCC-agnostic — the same YAML chain runs identically whether it's executing inside Houdini, Maya, or Blender. Each plugin handles the DCC-specific bootstrapping, file operations, and parameter access, while the core job logic stays unchanged.</p>
+
+        <div class="dcc-row">
+          <div class="dcc-card">
+            <div class="dcc-icon">
+              <img src="assets/images/icons/houdini.svg" alt="">
+              <div class="dcc-name">Houdini</div>
+            </div>
+            <p class="dcc-desc">Primary authoring environment. Chains live as ROP networks inside Houdini. Supports all process types including OutputNode (SubmitToMonster ROP) and HDA packaging for distribution.</p>
+          </div>
+          <div class="dcc-card">
+            <div class="dcc-icon">
+              <img src="assets/images/icons/autodesk.svg" alt="">
+              <div class="dcc-name">Maya</div>
+            </div>
+            <p class="dcc-desc">Full plugin parity for character and rigging pipelines. HandleParameters adapts to Maya's attribute system. Chains submitted from Houdini execute inside Maya sessions transparently.</p>
+          </div>
+          <div class="dcc-card">
+            <div class="dcc-icon">
+              <img src="assets/images/icons/blender.svg" alt="">
+              <div class="dcc-name">Blender</div>
+            </div>
+            <p class="dcc-desc">Enables the same workflow automation for Blender-based pipelines. Same chain graph, DCC-specific plugin handles environment setup and file I/O.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROCESS TYPES -->
+      <div class="article-block">
+        <p class="block-label">Built-in processes</p>
+        <h2 class="block-heading">What a node can do</h2>
+        <hr class="block-rule">
+        <p class="prose">Each node in a chain executes one or more processes in sequence. These are the built-in process types — all configurable via parameters, no code needed:</p>
+
+        <table class="process-table">
+          <tr>
+            <th>Process</th>
+            <th>What it does</th>
+          </tr>
+          <tr>
+            <td>Open</td>
+            <td>Opens a workfile from a specified context. Can optionally migrate from a template if no existing file is found.</td>
+          </tr>
+          <tr>
+            <td>Save</td>
+            <td>Saves the scene to a specific context path — version-controlled and publish-path-aware.</td>
+          </tr>
+          <tr>
+            <td>Output</td>
+            <td>Submits render or cache outputs to the render farm (Monster). Creates farm jobs for downstream steps.</td>
+          </tr>
+          <tr>
+            <td>Handle Parameters</td>
+            <td>Sets parameters or triggers buttons in the workfile — overrides values per-shot without touching the file manually.</td>
+          </tr>
+          <tr>
+            <td>Import Publish</td>
+            <td>Imports a published asset or cache into the current workfile, resolving the correct version automatically.</td>
+          </tr>
+          <tr>
+            <td>Apply Context Settings</td>
+            <td>Sets scene properties — FPS, frame range, resolution — from the ShotGrid context. No manual entry.</td>
+          </tr>
+          <tr>
+            <td>Scene Breakdown</td>
+            <td>Updates all inputs in the workfile to their latest published versions. Triggers fallback if nothing has changed.</td>
+          </tr>
+          <tr>
+            <td>Run Code</td>
+            <td>Executes arbitrary Python inside the workfile session. For cases where no built-in process covers the requirement.</td>
+          </tr>
+          <tr>
+            <td>Daily</td>
+            <td>Publishes a daily review version to ShotGrid.</td>
+          </tr>
+          <tr>
+            <td>Merge Workfile</td>
+            <td>Merges another workfile's contents into the current session — used for combining assets across departments.</td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+
+    <div class="wrap" style="margin-top: 48px;">
+
+      <!-- ARCHITECTURE -->
+      <div class="article-block">
+        <p class="block-label">Architecture</p>
+        <h2 class="block-heading">System design</h2>
+        <hr class="block-rule">
+        <p class="prose">Layered abstractions: <strong>Context → Method → Class → File/Object → Job.</strong> A single graph adapts to any DCC and can be overridden at any layer without rewriting shared logic.</p>
+        <p class="prose" style="margin-top: 14px;"><strong>JobChainInterpreter</strong> reads and parses the submission YAML, extracting all process definitions and context information. <strong>JobChainExecutor</strong> runs a single node — delegating to a <strong>ProcessPlugin</strong> (what runs) and a <strong>SoftwarePlugin</strong> (DCC-specific context). <strong>JobChainBuilder</strong> assembles the full farm monster job when submitting. All configurable at the YAML level, no code changes needed per show.</p>
+      </div>
+
+    </div>
+
+    <div class="wrap-wide">
+      <div class="diagram-scroll">
+        <img src="assets/images/job-chain/architecture-overview-p1.jpg" alt="Job Chain system architecture">
+        <p class="diagram-cap">Full system architecture — Context / Method / Class / File / Object / Job layer hierarchy</p>
+      </div>
+    </div>
+
+    <div class="wrap" style="margin-top: 48px;">
+
+      <!-- EXECUTION FLOW -->
+      <div class="article-block">
+        <p class="block-label">Execution flow</p>
+        <h2 class="block-heading">Three ways to run a chain</h2>
+        <hr class="block-rule">
+        <div class="feature-grid">
+          <div class="feature">
+            <div class="feature-name">Submit from Houdini</div>
+            <p class="feature-desc">Press Submit on the Job Chain node — dispatches to the render farm. All downstream nodes execute as a sequenced monster job.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Run in Houdini</div>
+            <p class="feature-desc">Press Run — executes processes locally in the current session. Immediate and synchronous, good for iteration and debugging.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Submit from ShotGrid</div>
+            <p class="feature-desc">Right-click a version → Submit Job Chain. Standard path for artists. No Houdini needed. Finds the relevant chain under the template entity automatically.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Submit from Python</div>
+            <p class="feature-desc"><code>from job_chain import job_chain</code> — used by other TD tools that call Job Chain as a backend API, enabling fully automated pipelines with no artist interaction at all.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="wrap-wide">
+      <div class="diagram">
+        <img src="assets/images/job-chain/execution-flow-p1.jpg" alt="Job Chain execution flow">
+        <p class="diagram-cap">Execution flow — three submission paths mapping to the same underlying system</p>
+      </div>
+    </div>
+
+    <div class="wrap" style="margin-top: 48px;">
+
+      <!-- IN PRODUCTION -->
+      <div class="article-block">
+        <p class="block-label">What it powered</p>
+        <h2 class="block-heading">In production</h2>
+        <hr class="block-rule">
+        <p class="prose">Job Chain became ILP's pipeline backbone — other TDs built their own tools on top of it. In production it drove QC renders, auto slap comps, groom and CFX simulation pipelines, and cross-department publishing handoffs.</p>
+        <p class="prose" style="margin-top: 14px;">Most complete example: on Ronja, animators right-clicked a ShotGrid version and received a fully groomed, simulated, and lit character render — no TD involvement, no manual steps. The entire CFX and groom pipeline for the Queen Harpy ran through Job Chain.</p>
+        <p class="prose" style="margin-top: 14px;">Chains were also packaged as Houdini Digital Assets (HDAs) to simplify re-use across shots — exposing only the critical parameters while hiding the underlying automation complexity from artists.</p>
+
+        <div class="tech-row">
+          <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+          <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+          <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Maya</span>
+          <span class="ti"><img src="assets/images/icons/blender.svg" alt="">Blender</span>
+          <span class="ti"><img src="assets/images/icons/shotgrid.svg" alt="">ShotGrid</span>
+          <span class="ti">YAML</span>
+          <span class="ti">Render Farm</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="page-nav">
+      <a href="index.html#projects" class="pnav-link">← All Projects</a>
+      <a href="ves-award.html" class="pnav-link">Queen Harpy →</a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-name">David Allan</span>
+    <span>Technical Director · VES Award Winner</span>
+    <span><a href="mailto:david.pal.allan@gmail.com" style="color: inherit;">david.pal.allan@gmail.com</a></span>
+  </footer>
+
+</body>
+</html>

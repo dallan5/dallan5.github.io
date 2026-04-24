@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pix2Pix Architecture — Backplate → HDRI</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #0d1117; color: #e6edf3; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; padding: 40px 20px; }
+  h1 { text-align: center; font-size: 28px; margin-bottom: 8px; color: #58a6ff; }
+  .subtitle { text-align: center; color: #8b949e; font-size: 14px; margin-bottom: 40px; }
+
+  .section { max-width: 1100px; margin: 0 auto 60px; }
+  .section-title { font-size: 20px; color: #58a6ff; margin-bottom: 20px; padding-bottom: 8px; border-bottom: 1px solid #21262d; }
+
+  /* Flow diagram */
+  .flow { display: flex; flex-direction: column; gap: 0; align-items: center; }
+
+  .step {
+    background: #161b22; border: 1px solid #30363d; border-radius: 12px;
+    padding: 20px 28px; width: 100%; max-width: 900px; position: relative;
+  }
+  .step-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .step-num {
+    background: #58a6ff; color: #0d1117; font-weight: 700; font-size: 14px;
+    width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .step-name { font-weight: 600; font-size: 16px; color: #f0f6fc; }
+  .step-desc { color: #8b949e; font-size: 14px; line-height: 1.6; margin-left: 40px; }
+  .step-desc code { background: #1c2333; padding: 2px 6px; border-radius: 4px; color: #79c0ff; font-size: 13px; }
+
+  .arrow {
+    width: 2px; height: 28px; background: #30363d; position: relative;
+  }
+  .arrow::after {
+    content: '▼'; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%);
+    color: #30363d; font-size: 10px;
+  }
+
+  /* Tensor shape badges */
+  .shape {
+    display: inline-block; background: #1f3a1f; border: 1px solid #2ea04370;
+    color: #3fb950; padding: 2px 8px; border-radius: 4px; font-size: 12px;
+    font-family: monospace; margin: 2px 2px;
+  }
+  .shape.input { background: #1f2a3f; border-color: #58a6ff70; color: #58a6ff; }
+  .shape.output { background: #3f2a1f; border-color: #d2964070; color: #d29640; }
+
+  /* U-Net diagram */
+  .unet-container { display: flex; justify-content: center; margin: 20px 0; }
+  .unet-svg { max-width: 100%; }
+
+  /* GAN loop */
+  .gan-loop {
+    display: grid; grid-template-columns: 1fr 80px 1fr; gap: 0;
+    max-width: 900px; margin: 20px auto; align-items: start;
+  }
+  .gan-box {
+    background: #161b22; border: 2px solid #30363d; border-radius: 12px; padding: 20px;
+  }
+  .gan-box.gen { border-color: #3fb95080; }
+  .gan-box.disc { border-color: #f8514980; }
+  .gan-box h3 { font-size: 16px; margin-bottom: 10px; }
+  .gan-box.gen h3 { color: #3fb950; }
+  .gan-box.disc h3 { color: #f85149; }
+  .gan-box p { color: #8b949e; font-size: 13px; line-height: 1.6; }
+  .gan-middle { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding-top: 40px; }
+  .gan-arrow-right { color: #3fb950; font-size: 20px; }
+  .gan-arrow-left { color: #f85149; font-size: 20px; }
+  .gan-label { font-size: 10px; color: #8b949e; text-align: center; }
+
+  /* Loss diagram */
+  .loss-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; max-width: 900px; margin: 0 auto; }
+  .loss-box { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 20px; }
+  .loss-box h3 { font-size: 15px; margin-bottom: 8px; }
+  .loss-box .formula {
+    background: #1c2333; padding: 12px 16px; border-radius: 8px; font-family: monospace;
+    font-size: 14px; color: #79c0ff; margin: 10px 0; text-align: center;
+  }
+  .loss-box p { color: #8b949e; font-size: 13px; line-height: 1.6; }
+
+  /* Training step */
+  .train-steps { display: flex; gap: 0; align-items: stretch; max-width: 900px; margin: 0 auto; }
+  .train-step {
+    flex: 1; background: #161b22; border: 1px solid #30363d; padding: 20px; position: relative;
+  }
+  .train-step:first-child { border-radius: 12px 0 0 12px; }
+  .train-step:last-child { border-radius: 0 12px 12px 0; }
+  .train-step h3 { font-size: 14px; margin-bottom: 8px; }
+  .train-step.d-step { border-color: #f8514940; }
+  .train-step.g-step { border-color: #3fb95040; }
+  .train-step.d-step h3 { color: #f85149; }
+  .train-step.g-step h3 { color: #3fb950; }
+  .train-step p { color: #8b949e; font-size: 12px; line-height: 1.6; }
+  .train-step .step-order {
+    position: absolute; top: -12px; left: 20px; background: #0d1117; padding: 0 8px;
+    font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .train-arrow {
+    display: flex; align-items: center; color: #30363d; font-size: 24px; padding: 0 4px;
+    background: #161b22; border-top: 1px solid #30363d; border-bottom: 1px solid #30363d;
+  }
+
+  .note {
+    background: #1c1d2e; border: 1px solid #58a6ff40; border-radius: 8px;
+    padding: 14px 18px; margin-top: 16px; font-size: 13px; color: #8b949e; line-height: 1.6;
+  }
+  .note strong { color: #58a6ff; }
+</style>
+</head>
+<body>
+
+<h1>Pix2Pix: Backplate → HDRI</h1>
+<p class="subtitle">Complete architecture and training flow</p>
+
+<!-- ==================== SECTION 1: HIGH LEVEL ==================== -->
+<div class="section">
+  <div class="section-title">1. The Big Picture — What Happens Each Training Step</div>
+
+  <div class="gan-loop">
+    <div class="gan-box gen">
+      <h3>Generator (U-Net)</h3>
+      <p>Takes a 128×128 backplate photo and tries to paint a full 128×256 equirectangular HDRI from it.</p>
+      <p style="margin-top:8px;">Goal: <strong style="color:#3fb950;">fool the discriminator</strong> into thinking the output is a real HDRI, while also matching the ground truth pixel-by-pixel.</p>
+      <p style="margin-top:8px;"><span class="shape input">128×128×3</span> → <span class="shape output">128×256×3</span></p>
+    </div>
+
+    <div class="gan-middle">
+      <div class="gan-label">fake HDRI</div>
+      <div class="gan-arrow-right">→</div>
+      <div style="height: 20px;"></div>
+      <div class="gan-arrow-left">←</div>
+      <div class="gan-label">"real or fake?"</div>
+    </div>
+
+    <div class="gan-box disc">
+      <h3>Discriminator (PatchGAN)</h3>
+      <p>Sees the backplate + an HDRI (either real or generated) and judges whether each local patch looks real or fake.</p>
+      <p style="margin-top:8px;">Goal: <strong style="color:#f85149;">correctly identify</strong> which HDRIs are real ground truth and which are generator fakes.</p>
+      <p style="margin-top:8px;"><span class="shape input">128×256×6</span> → <span class="shape output">16×33×1</span></p>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>The GAN game:</strong> The generator and discriminator compete. The generator gets better at making realistic HDRIs because the discriminator keeps catching its mistakes. The discriminator gets better at spotting fakes because the generator keeps improving. In theory they push each other upward — in practice, the discriminator often wins (as we've seen with D loss dropping to 0.047).
+  </div>
+</div>
+
+<!-- ==================== SECTION 2: GENERATOR ==================== -->
+<div class="section">
+  <div class="section-title">2. Generator Architecture — The U-Net</div>
+
+  <div class="flow">
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div class="step-name">Input Backplate</div>
+      </div>
+      <div class="step-desc">
+        Your photo. <span class="shape input">B × 3 × 128 × 128</span><br>
+        Pixel values normalized to [-1, 1]. Three channels: R, G, B.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div class="step-name">Stretch to Target Aspect Ratio</div>
+      </div>
+      <div class="step-desc">
+        <code>F.interpolate(x, size=(128, 256), mode="bilinear")</code><br>
+        Stretches the square backplate to 2:1 panoramic ratio. <span class="shape input">128×128</span> → <span class="shape">128×256</span><br>
+        No learning here — just bilinear interpolation. This ensures the skip connections between encoder and decoder layers have matching sizes.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step" style="border-color: #3fb95040;">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div class="step-name">Encoder — Compress Down (6 layers)</div>
+      </div>
+      <div class="step-desc">
+        Each layer: <code>Conv2d(stride=2)</code> → <code>InstanceNorm</code> → <code>LeakyReLU(0.2)</code><br><br>
+
+        <span class="shape">3 × 128×256</span> → <code>down1</code> → <span class="shape">64 × 64×128</span> (d1)<br>
+        <span class="shape">64 × 64×128</span> → <code>down2</code> → <span class="shape">128 × 32×64</span> (d2)<br>
+        <span class="shape">128 × 32×64</span> → <code>down3</code> → <span class="shape">256 × 16×32</span> (d3)<br>
+        <span class="shape">256 × 16×32</span> → <code>down4</code> → <span class="shape">512 × 8×16</span> (d4) + dropout 50%<br>
+        <span class="shape">512 × 8×16</span> → <code>down5</code> → <span class="shape">512 × 4×8</span> (d5) + dropout 50%<br>
+        <span class="shape">512 × 4×8</span> → <code>down6</code> → <span class="shape">512 × 2×4</span> (d6) — no norm<br><br>
+
+        Each step halves the spatial size but increases channels. The image gets squeezed into a dense code.<br>
+        Dropout on layers 4-5 forces the network to not rely on any single feature — prevents overfitting.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step" style="border-color: #d2a64040;">
+      <div class="step-header">
+        <div class="step-num">4</div>
+        <div class="step-name">Bottleneck</div>
+      </div>
+      <div class="step-desc">
+        <span class="shape output">512 × 2 × 4</span> = only <strong style="color:#d29640;">4,096 values</strong> to represent the entire scene.<br><br>
+        This is where the network is forced to "understand" the image. It can't store pixel details here — only high-level concepts like: indoor/outdoor, time of day, overall brightness, dominant colors. Everything else was stripped away by the encoder.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step" style="border-color: #58a6ff40;">
+      <div class="step-header">
+        <div class="step-num">5</div>
+        <div class="step-name">Decoder — Expand Back Up (5 layers + final)</div>
+      </div>
+      <div class="step-desc">
+        Each layer: <code>ConvTranspose2d(stride=2)</code> → <code>InstanceNorm</code> → <code>ReLU</code> → <strong style="color:#58a6ff;">concatenate with encoder skip</strong><br><br>
+
+        <span class="shape">512 × 2×4</span> → <code>up1</code> → upsample to 4×8, <strong style="color:#58a6ff;">cat with d5</strong> → <span class="shape">1024 × 4×8</span><br>
+        <span class="shape">1024 × 4×8</span> → <code>up2</code> → upsample to 8×16, <strong style="color:#58a6ff;">cat with d4</strong> → <span class="shape">1024 × 8×16</span><br>
+        <span class="shape">1024 × 8×16</span> → <code>up3</code> → upsample to 16×32, <strong style="color:#58a6ff;">cat with d3</strong> → <span class="shape">512 × 16×32</span><br>
+        <span class="shape">512 × 16×32</span> → <code>up4</code> → upsample to 32×64, <strong style="color:#58a6ff;">cat with d2</strong> → <span class="shape">256 × 32×64</span><br>
+        <span class="shape">256 × 32×64</span> → <code>up5</code> → upsample to 64×128, <strong style="color:#58a6ff;">cat with d1</strong> → <span class="shape">128 × 64×128</span><br><br>
+
+        The <strong style="color:#58a6ff;">skip connections</strong> are the key insight. Each decoder layer gets TWO inputs: the upsampled abstract representation from below AND the fine-grained features saved from the encoder. This lets the network combine "I know this is a daytime outdoor scene" (from bottleneck) with "these exact edge pixels look like this" (from skip).
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">6</div>
+        <div class="step-name">Final Layer → Output HDRI</div>
+      </div>
+      <div class="step-desc">
+        <code>ConvTranspose2d(128 → 3, stride=2)</code> → <code>Tanh</code><br>
+        Upsamples from 64×128 to <span class="shape output">3 × 128 × 256</span><br><br>
+        <code>Tanh</code> squishes all values to [-1, 1]. This is your generated HDRI.
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>Why skip connections cause "input copying":</strong> The easiest thing for the network to learn is to pass the encoder features straight through to the decoder unchanged. The backplate region of the HDRI should look exactly like the input, so the skip connections happily carry that through. The challenge is getting the network to generate NEW content for the parts of the panorama that aren't in the original photo.
+  </div>
+</div>
+
+<!-- ==================== SECTION 3: DISCRIMINATOR ==================== -->
+<div class="section">
+  <div class="section-title">3. Discriminator Architecture — The PatchGAN</div>
+
+  <div class="flow">
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div class="step-name">Input: Backplate + HDRI (concatenated)</div>
+      </div>
+      <div class="step-desc">
+        The backplate (resized to 128×256) and an HDRI (real or generated) are stacked along the channel dimension.<br>
+        <span class="shape input">3ch backplate</span> + <span class="shape input">3ch HDRI</span> = <span class="shape">6 × 128 × 256</span><br><br>
+        The discriminator sees BOTH images together — it's not just asking "does this HDRI look real?" but "does this HDRI make sense given THIS backplate?"
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step" style="border-color: #f8514940;">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div class="step-name">Instance Noise (training only)</div>
+      </div>
+      <div class="step-desc">
+        <code>x = x + randn_like(x) * noise_std</code><br><br>
+        Random Gaussian noise added to the input before the discriminator processes it. Starts at <strong style="color:#f85149;">std = 0.1</strong>, linearly decays to 0 by epoch 75.<br>
+        Purpose: blurs the boundary between real and fake, preventing the discriminator from latching onto tiny pixel-level artifacts. Without this, D gets too good too fast and the generator learns nothing from the adversarial signal.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step" style="border-color: #f8514940;">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div class="step-name">Convolutional Layers</div>
+      </div>
+      <div class="step-desc">
+        <span class="shape">6 × 128×256</span> → <code>Conv(stride=2)</code> → <span class="shape">64 × 64×128</span><br>
+        <span class="shape">64 × 64×128</span> → <code>Conv(stride=2) + Norm</code> → <span class="shape">128 × 32×64</span><br>
+        <span class="shape">128 × 32×64</span> → <code>Conv(stride=2) + Norm</code> → <span class="shape">256 × 16×32</span><br>
+        <span class="shape">256 × 16×32</span> → <code>ZeroPad + Conv + Norm</code> → <span class="shape">512 × 16×32</span><br>
+        <span class="shape">512 × 16×32</span> → <code>ZeroPad + Conv</code> → <span class="shape output">1 × 16 × 33</span>
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">4</div>
+        <div class="step-name">Output: Patch Predictions</div>
+      </div>
+      <div class="step-desc">
+        <span class="shape output">1 × 16 × 33</span> = <strong style="color:#d29640;">528 patches</strong>, each covering roughly a 70×70 pixel region of the original image.<br><br>
+        Each value is a score: high = "this patch looks real", low = "this patch looks fake".<br>
+        This is better than a single real/fake score because it forces the discriminator to check EVERY part of the image. The generator can't get away with making one area look good and ignoring the rest.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 4: LOSSES ==================== -->
+<div class="section">
+  <div class="section-title">4. Loss Functions — What Drives Learning</div>
+
+  <div class="loss-grid">
+    <div class="loss-box" style="border-color: #3fb95040;">
+      <h3 style="color: #3fb950;">Generator Loss</h3>
+      <div class="formula">L_G = L_GAN + 50 × L_L1</div>
+      <p><strong style="color:#e6edf3;">L_GAN (adversarial):</strong> MSE between discriminator's prediction on the fake HDRI and 1.0 (what "real" looks like). The generator wants the discriminator to output all 1s for its fake images.</p>
+      <p style="margin-top:8px;"><strong style="color:#e6edf3;">L_L1 (reconstruction):</strong> Average absolute pixel difference between generated HDRI and ground truth. Forces the output to be close to the correct answer.</p>
+      <p style="margin-top:8px;"><strong style="color:#e6edf3;">λ = 50:</strong> L1 is weighted 50× more than GAN loss. This means pixel accuracy dominates — which is why outputs are blurry but color-correct. The GAN loss adds sharpness but is a minority voice.</p>
+    </div>
+
+    <div class="loss-box" style="border-color: #f8514940;">
+      <h3 style="color: #f85149;">Discriminator Loss</h3>
+      <div class="formula">L_D = 0.5 × (L_real + L_fake)</div>
+      <p><strong style="color:#e6edf3;">L_real:</strong> MSE between prediction on real HDRI and <strong style="color:#f85149;">0.9</strong> (not 1.0 — label smoothing). Penalizes the discriminator for not recognizing real images.</p>
+      <p style="margin-top:8px;"><strong style="color:#e6edf3;">L_fake:</strong> MSE between prediction on generated HDRI and <strong style="color:#f85149;">0.1</strong> (not 0.0 — label smoothing). Penalizes for not catching fakes.</p>
+      <p style="margin-top:8px;"><strong style="color:#e6edf3;">Label smoothing:</strong> Using 0.9/0.1 instead of 1.0/0.0 prevents the discriminator from becoming 100% confident, which would kill gradient flow to the generator.</p>
+    </div>
+  </div>
+
+  <div class="note" style="max-width: 900px; margin: 16px auto 0;">
+    <strong>LSGAN (Least Squares):</strong> Both losses use MSE instead of the traditional binary cross-entropy. With BCE, once the discriminator is confident, gradients vanish — it stops teaching the generator. With MSE, even confident predictions still produce meaningful gradients. More stable training.
+  </div>
+</div>
+
+<!-- ==================== SECTION 5: TRAINING LOOP ==================== -->
+<div class="section">
+  <div class="section-title">5. One Training Step — What Happens Per Batch</div>
+
+  <div class="train-steps">
+    <div class="train-step d-step">
+      <div class="step-order">Step A — Train Discriminator</div>
+      <h3>Freeze Generator, Update Discriminator</h3>
+      <p style="margin-top:4px;">
+        1. Generator makes fake HDRIs (no gradients tracked)<br><br>
+        2. Discriminator scores real pairs:<br>
+        &nbsp;&nbsp;<code style="color:#79c0ff;font-size:11px;">pred_real = D(backplate, real_hdri)</code><br><br>
+        3. Discriminator scores fake pairs:<br>
+        &nbsp;&nbsp;<code style="color:#79c0ff;font-size:11px;">pred_fake = D(backplate, fake_hdri)</code><br><br>
+        4. Compute D loss (wants pred_real≈0.9, pred_fake≈0.1)<br><br>
+        5. Backpropagate → update D weights only
+      </p>
+    </div>
+    <div class="train-arrow">→</div>
+    <div class="train-step g-step">
+      <div class="step-order">Step B — Train Generator</div>
+      <h3>Freeze Discriminator, Update Generator</h3>
+      <p style="margin-top:4px;">
+        1. Generator makes fake HDRIs again (gradients ON)<br><br>
+        2. Discriminator scores the fakes:<br>
+        &nbsp;&nbsp;<code style="color:#79c0ff;font-size:11px;">pred_fake = D(backplate, fake_hdri)</code><br><br>
+        3. GAN loss: how far is pred_fake from 1.0?<br>
+        &nbsp;&nbsp;(generator wants D to say "real")<br><br>
+        4. L1 loss: pixel difference vs ground truth<br><br>
+        5. Total = GAN + 50×L1<br><br>
+        6. Backpropagate through D into G → update G weights only
+      </p>
+    </div>
+  </div>
+
+  <div class="note" style="max-width: 900px; margin: 16px auto 0;">
+    <strong>Key detail in Step B:</strong> The gradients flow backward through the discriminator's network into the generator. The generator learns "if I change this pixel, the discriminator's score changes by this much." The discriminator's weights don't change — it's used as a frozen lens that the generator learns to see through.
+  </div>
+</div>
+
+<!-- ==================== SECTION 6: EPOCH LIFECYCLE ==================== -->
+<div class="section">
+  <div class="section-title">6. Full Epoch Lifecycle</div>
+
+  <div class="flow">
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">1</div>
+        <div class="step-name">Set Instance Noise Level</div>
+      </div>
+      <div class="step-desc">
+        <code>noise_std = 0.1 × max(0, 1.0 - epoch / 75)</code><br>
+        At epoch 0: noise = 0.1. At epoch 39: noise ≈ 0.047. At epoch 75+: noise = 0.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">2</div>
+        <div class="step-name">Loop Over All 433 Batches</div>
+      </div>
+      <div class="step-desc">
+        6,934 training pairs ÷ 16 per batch = 433 batches.<br>
+        Each batch: load 16 backplate+HDRI pairs → run Step A (train D) → run Step B (train G) → log losses.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">3</div>
+        <div class="step-name">Step Learning Rate Scheduler</div>
+      </div>
+      <div class="step-desc">
+        Epochs 1-50: LR stays at 0.0002.<br>
+        Epochs 51-100: LR linearly decays to 0. Smaller steps for fine-tuning.
+      </div>
+    </div>
+
+    <div class="arrow"></div>
+
+    <div class="step">
+      <div class="step-header">
+        <div class="step-num">4</div>
+        <div class="step-name">Save Samples & Checkpoint (every 3 epochs)</div>
+      </div>
+      <div class="step-desc">
+        Run 4 validation images through the generator and save the backplate/generated/ground-truth comparison.<br>
+        Save full checkpoint (all weights + optimizer state) so training can be resumed.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ==================== SECTION 7: YOUR NUMBERS ==================== -->
+<div class="section">
+  <div class="section-title">7. Your Current Run — What the Numbers Mean</div>
+
+  <div style="max-width: 900px; margin: 0 auto;">
+    <table style="width:100%; border-collapse: collapse; font-size: 14px;">
+      <tr style="border-bottom: 1px solid #30363d;">
+        <th style="text-align:left; padding: 10px; color: #8b949e;">Metric</th>
+        <th style="text-align:left; padding: 10px; color: #8b949e;">Epoch 1</th>
+        <th style="text-align:left; padding: 10px; color: #8b949e;">Epoch 39</th>
+        <th style="text-align:left; padding: 10px; color: #8b949e;">What It Means</th>
+      </tr>
+      <tr style="border-bottom: 1px solid #21262d;">
+        <td style="padding: 10px; color: #f0f6fc;">Loss/Discriminator</td>
+        <td style="padding: 10px; color: #f85149;">0.31</td>
+        <td style="padding: 10px; color: #f85149;">0.047</td>
+        <td style="padding: 10px; color: #8b949e;">D is very confident — too good at spotting fakes. Healthy range: 0.2–0.5</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #21262d;">
+        <td style="padding: 10px; color: #f0f6fc;">Loss/GAN</td>
+        <td style="padding: 10px; color: #3fb950;">0.40</td>
+        <td style="padding: 10px; color: #d29640;">0.66</td>
+        <td style="padding: 10px; color: #8b949e;">Generator is getting WORSE at fooling D (going up = bad)</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #21262d;">
+        <td style="padding: 10px; color: #f0f6fc;">Loss/L1</td>
+        <td style="padding: 10px; color: #d29640;">0.23</td>
+        <td style="padding: 10px; color: #3fb950;">0.15</td>
+        <td style="padding: 10px; color: #8b949e;">Pixel accuracy is improving — this is working well</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px; color: #f0f6fc;">Loss/Generator</td>
+        <td style="padding: 10px;">11.85</td>
+        <td style="padding: 10px;">8.00</td>
+        <td style="padding: 10px; color: #8b949e;">Dominated by 50 × L1. GAN barely contributes. Total is dropping = good overall.</td>
+      </tr>
+    </table>
+
+    <div class="note" style="margin-top: 20px;">
+      <strong>Bottom line:</strong> The L1 reconstruction path is learning well — the model produces color-correct, scene-appropriate panoramas. But the adversarial path (which adds sharpness and realistic detail) has collapsed because the discriminator won the arms race. The next architectural improvement (perceptual/VGG loss) would replace the discriminator's role with a pre-trained network that measures "does this look like a real image" without the unstable GAN training dynamic.
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

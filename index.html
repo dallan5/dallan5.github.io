@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>David Allan — Technical Director</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ── Hero ── */
+    #hero { padding-top: 132px; padding-bottom: var(--gap); text-align: center; }
+    .hero-name { font-family: var(--font-display); font-weight: 700; font-size: clamp(56px, 9vw, 100px); letter-spacing: 0.06em; line-height: 1; color: var(--ink); text-transform: uppercase; margin-bottom: 18px; }
+    .hero-role { font-size: 11px; font-weight: 500; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink-mid); margin-bottom: 6px; }
+    .hero-award { font-size: 11px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--ink); margin-bottom: 28px; }
+    .hero-bio { font-size: 15px; color: var(--ink-mid); max-width: 480px; margin: 0 auto 32px; }
+    .hero-ctas { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+    /* ── Reel ── */
+    .reel-embed { position: relative; width: 100%; padding-bottom: 56.25%; background: var(--ink); border: 1px solid var(--rule); }
+    .reel-embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+    /* ── Credits grid (portrait poster wall) ── */
+    .credits-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    .credit-card { background: var(--bg); overflow: hidden; }
+    .credit-card a { display: block; text-decoration: none; color: inherit; }
+    .credit-img-wrap { aspect-ratio: 2/3; overflow: hidden; }
+    .credit-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: grayscale(18%) brightness(0.97); transition: filter .35s, transform .45s; }
+    .credit-card:hover .credit-img { filter: grayscale(0%) brightness(1); transform: scale(1.04); }
+    .credit-body { padding: 12px 14px 16px; }
+    .credit-show { font-family: var(--font-display); font-size: 14px; font-weight: 700; color: var(--ink); line-height: 1.2; margin-bottom: 3px; }
+    .credit-meta { font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); }
+    .credit-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 2px 6px; margin-bottom: 4px; }
+
+    /* ── Projects grid ── */
+    .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    .project-card { background: var(--bg); padding: 28px; transition: background .18s; }
+    .project-card:hover { background: var(--bg-card); }
+    .project-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+    .project-type { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 12px; }
+    .project-desc { font-size: 13.5px; color: var(--ink-mid); line-height: 1.65; }
+    .proj-badge { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 2px 6px; margin-bottom: 8px; }
+
+    /* ── About ── */
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; }
+    .contact-list { list-style: none; }
+    .contact-list li { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: 13px; }
+    .contact-list li:first-child { border-top: 1px solid var(--rule); }
+    .cl-label { font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-light); min-width: 72px; padding-top: 1px; }
+    .cl-val { color: var(--ink-mid); }
+    .cl-val a { color: var(--link); }
+
+    /* ── Tech stack groups ── */
+    .stack-section { margin-top: 48px; padding-top: 40px; border-top: 1px solid var(--rule); }
+    .stack-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 20px; }
+    .stack-group { background: var(--bg); padding: 22px 22px 20px; }
+    .stack-cat { font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 14px; }
+    .stack-group .tech-row { margin-top: 0; gap: 5px; }
+
+    @media (max-width: 1100px) {
+      .stack-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 700px) {
+      .stack-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 460px) {
+      .stack-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 1100px) {
+      .credits-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    @media (max-width: 900px) {
+      .credits-grid { grid-template-columns: repeat(3, 1fr); }
+      .projects-grid { grid-template-columns: 1fr 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 32px; }
+    }
+    @media (max-width: 560px) {
+      .credits-grid { grid-template-columns: repeat(2, 1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-name" href="#hero">David Allan</a>
+    <ul class="nav-links">
+      <li><a href="#work">Work</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero" style="border-bottom: 1px solid var(--rule); padding-bottom: var(--gap);">
+    <div class="wrap">
+      <h1 class="hero-name">David Allan</h1>
+      <p class="hero-role">Pipeline & CG Technical Director</p>
+      <p class="hero-award">VES Award Winner · Available June 2026</p>
+      <p class="hero-bio">8+ years at ILP building creature and simulation systems for Star Wars, Jurassic World, and Stranger Things — and the pipeline tools that made them faster to produce.</p>
+      <div class="hero-ctas">
+        <a href="#work" class="btn btn-fill">Watch Reel</a>
+        <a href="https://www.linkedin.com/in/davidpallan" target="_blank" class="btn">LinkedIn</a>
+        <a href="mailto:david.pal.allan@gmail.com" class="btn">Get in Touch</a>
+      </div>
+      <div style="margin-top: 48px;">
+        <a href="ves-award.html" style="display:inline-block; text-decoration:none;">
+          <img src="assets/images/icons/ves-logo.png" alt="Visual Effects Society Award" style="height: 56px; width: auto;">
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK / REEL + CREDITS -->
+  <section id="work">
+    <div class="wrap">
+      <p class="label">Showreel</p>
+      <h2 class="heading">Work</h2>
+      <hr class="rule">
+      <div class="reel-embed" style="margin-bottom: 56px;">
+        <iframe src="https://player.vimeo.com/video/1179440695?color=c5c0b8&title=0&byline=0&portrait=0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
+
+      <p class="label" style="margin-bottom: 4px;">Credits</p>
+      <hr class="rule">
+      <div class="credits-grid">
+
+        <div class="credit-card">
+          <a href="ves-award.html#ronja">
+            <div class="credit-img-wrap"><img src="assets/images/credits/ronja.jpg" alt="Ronja" class="credit-img"></div>
+            <div class="credit-body">
+              <span class="credit-badge">VES Award</span>
+              <div class="credit-show">Ronja, the Robber's Daughter</div>
+              <div class="credit-meta">2024 · CG TD / Groom</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#lastofus">
+            <div class="credit-img-wrap"><img src="assets/images/credits/last-of-us.jpg" alt="The Last of Us" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">The Last of Us</div>
+              <div class="credit-meta">2025 · ILP</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#indiana">
+            <div class="credit-img-wrap"><img src="assets/images/credits/indiana-jones.jpg" alt="Indiana Jones" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">Indiana Jones: Dial of Destiny</div>
+              <div class="credit-meta">2023 · Groom & CFX TD</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#strangerthings">
+            <div class="credit-img-wrap"><img src="assets/images/credits/stranger-things.jpg" alt="Stranger Things" class="credit-img"></div>
+            <div class="credit-body">
+              <span class="credit-badge">VES Nom.</span>
+              <div class="credit-show">Stranger Things S4</div>
+              <div class="credit-meta">2022 · CFX TD</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#slumberland">
+            <div class="credit-img-wrap"><img src="assets/images/credits/slumberland.jpg" alt="Slumberland" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">Slumberland</div>
+              <div class="credit-meta">2022 · ILP</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#sandman">
+            <div class="credit-img-wrap"><img src="assets/images/credits/sandman.jpg" alt="The Sandman" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">The Sandman</div>
+              <div class="credit-meta">2022 · Groom & CFX TD</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#battlefield">
+            <div class="credit-img-wrap"><img src="assets/images/credits/battlefield-2042.jpg" alt="Battlefield 2042" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">Battlefield 2042: Exodus</div>
+              <div class="credit-meta">2021 · ILP</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#farcry">
+            <div class="credit-img-wrap"><img src="assets/images/credits/far-cry-6.jpg" alt="Far Cry 6" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">Far Cry 6: Chicharron Run</div>
+              <div class="credit-meta">2021 · ILP</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#mandalorian">
+            <div class="credit-img-wrap"><img src="assets/images/credits/mandalorian.jpg" alt="The Mandalorian" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">The Mandalorian S2</div>
+              <div class="credit-meta">2020 · Lighting TD</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#westworld">
+            <div class="credit-img-wrap"><img src="assets/images/credits/westworld.jpg" alt="Westworld" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">Westworld S3</div>
+              <div class="credit-meta">2020 · Lighting TD</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#lostinspace">
+            <div class="credit-img-wrap"><img src="assets/images/credits/lost-in-space.jpg" alt="Lost in Space" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">Lost in Space S2</div>
+              <div class="credit-meta">2019 · Lighting TD</div>
+            </div>
+          </a>
+        </div>
+
+        <div class="credit-card">
+          <a href="ves-award.html#jurassicworld">
+            <div class="credit-img-wrap"><img src="assets/images/credits/jurassic-world.png" alt="Jurassic World" class="credit-img"></div>
+            <div class="credit-body">
+              <div class="credit-show">Jurassic World: Fallen Kingdom</div>
+              <div class="credit-meta">2018 · Lighting TD</div>
+            </div>
+          </a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="wrap">
+      <p class="label">Pipeline, Production & ML</p>
+      <h2 class="heading">Projects</h2>
+      <hr class="rule">
+      <div class="projects-grid">
+
+        <!-- Job Chain — featured -->
+        <div class="project-card project-card--img">
+          <a href="job-chain.html" style="display:block; color:inherit; text-decoration:none;">
+            <div class="proj-img-wrap">
+              <img src="assets/images/job-chain/execution-flow-p1.jpg" alt="Job Chain execution flow" class="proj-img" style="object-position: top;">
+            </div>
+            <div class="proj-body">
+              <div class="project-name">Job Chain</div>
+              <div class="project-type">Automation Framework · ILP 2020–2025</div>
+              <p class="project-desc">Node-based pipeline framework enabling artists to build and trigger complex, multi-step workflows without code. Studio-wide adoption at ILP across all active shows.</p>
+              <div class="tech-row">
+                <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+                <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+                <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Maya</span>
+                <span class="ti"><img src="assets/images/icons/blender.svg" alt="">Blender</span>
+                <span class="ti"><img src="assets/images/icons/shotgrid.svg" alt="">ShotGrid</span>
+              </div>
+              <span class="more" style="margin-top:18px;">Deep dive →</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- HDRI from Backplate — featured -->
+        <div class="project-card project-card--img">
+          <a href="hdri-ml.html" style="display:block; color:inherit; text-decoration:none;">
+            <div class="proj-img-wrap" style="background:#1a1a1a;">
+              <img src="assets/images/hdri-backplate/epoch_0099_sample_2.png" alt="HDRI from Backplate — generated panorama" class="proj-img" style="object-position: top;">
+            </div>
+            <div class="proj-body">
+              <div class="project-name">HDRI from Backplate</div>
+              <div class="project-type">Machine Learning · UC Irvine · 2025–2026</div>
+              <p class="project-desc">Pix2Pix GAN trained to predict full 360° HDRI lighting environments from a single backplate photograph — removing the need to capture HDRIs on set.</p>
+              <div class="tech-row">
+                <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+                <span class="ti"><img src="assets/images/icons/pytorch.svg" alt="">PyTorch</span>
+                <span class="ti"><img src="assets/images/icons/numpy.svg" alt="">NumPy</span>
+              </div>
+              <span class="more" style="margin-top:18px;">See the results →</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Queen Harpy / Ronja — featured -->
+        <div class="project-card project-card--img">
+          <a href="ves-award.html" style="display:block; color:inherit; text-decoration:none;">
+            <div class="proj-img-wrap">
+              <img src="assets/images/ves/ronja-creature-d.jpg" alt="Queen Harpy — Ronja" class="proj-img">
+            </div>
+            <div class="proj-body">
+              <span class="proj-badge">VES Award 2025</span>
+              <div class="project-name">Queen Harpy</div>
+              <div class="project-type">Ronja, the Robber's Daughter · ILP 2024</div>
+              <p class="project-desc">Feather grooming, muscle and feather simulation, and lookdev for the Queen Harpy. Fully automated through Job Chain — animators received a lit, simulated render from a single ShotGrid action.</p>
+              <div class="tech-row">
+                <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+                <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+                <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Arnold</span>
+              </div>
+              <span class="more" style="margin-top:18px;">Full story →</span>
+            </div>
+          </a>
+        </div>
+
+        <!-- Megascan Ingestion -->
+        <div class="project-card project-card--img">
+          <div class="proj-img-wrap">
+            <img src="assets/images/megascan-library/megascan.jpeg" alt="Megascan Ingestion" class="proj-img">
+          </div>
+          <div class="proj-body">
+            <div class="project-name">Megascan Library</div>
+            <div class="project-type">Asset Management · Multi-show</div>
+            <p class="project-desc">Studio-wide library for importing and cleaning Megascan assets into Maya and Houdini. Removed hours of lookdev setup per environment, per show.</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+              <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Maya</span>
+              <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- CFX & Groom Pipeline -->
+        <div class="project-card project-card--img">
+          <div class="proj-img-wrap">
+            <img src="assets/images/cfx-groom-pipeline/cfx-groom-pipeline.png" alt="CFX & Groom Pipeline" class="proj-img">
+          </div>
+          <div class="proj-body">
+            <div class="project-name">CFX & Groom Pipeline</div>
+            <div class="project-type">Character FX · Multi-show</div>
+            <p class="project-desc">Muscle, fascia, and skin-sliding systems for creature characters across Stranger Things, Indiana Jones, and Ronja. Integrated with Job Chain for one-click sim-to-render handoffs.</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+              <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+              <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Arnold</span>
+              <span class="ti">Ziva</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Artemis -->
+        <div class="project-card project-card--img">
+          <div class="proj-img-wrap">
+            <img src="assets/images/virtual-production/IMG_1815.jpeg" alt="Artemis Virtual Production" class="proj-img">
+          </div>
+          <div class="proj-body">
+            <div class="project-name">Artemis™ Virtual Production</div>
+            <div class="project-type">Virtual Production · STL, UC Irvine · 2026</div>
+            <p class="project-desc">Pipeline contribution to an automated projection-mapping platform for Spatially Augmented Reality. Integrates with Unreal Engine and handles complex non-rigid surfaces.</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+              <span class="ti"><img src="assets/images/icons/unrealengine.svg" alt="">Unreal Engine</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" style="border-bottom: none;">
+    <div class="wrap">
+      <p class="label">Background</p>
+      <h2 class="heading">About</h2>
+      <hr class="rule">
+      <div class="about-grid">
+        <div>
+          <p class="prose">CG Technical Director at Important Looking Pirates (Stockholm, 2017–2025). I build pipeline systems and artist tools for large-scale VFX productions — embedding in teams to understand how work actually flows, then making it faster and less manual.</p>
+          <p class="prose" style="margin-top: 14px;">Currently at UC Irvine studying Computer Science, Data Science & AI (2025–2026). VES member and on the 2026 VES Awards Nomination Panel.</p>
+        </div>
+        <div>
+          <ul class="contact-list">
+            <li><span class="cl-label">Email</span><span class="cl-val"><a href="mailto:david.pal.allan@gmail.com">david.pal.allan@gmail.com</a></span></li>
+            <li><span class="cl-label">LinkedIn</span><span class="cl-val"><a href="https://www.linkedin.com/in/davidpallan" target="_blank">linkedin.com/in/davidpallan</a></span></li>
+            <li><span class="cl-label">IMDb</span><span class="cl-val"><a href="https://www.imdb.com/name/nm11397826/" target="_blank">David Allan — IMDb</a></span></li>
+            <li><span class="cl-label">Reel</span><span class="cl-val"><a href="https://vimeo.com/1179440695" target="_blank">Vimeo</a></span></li>
+            <li><span class="cl-label">Location</span><span class="cl-val">Irvine, CA — available June 2026</span></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- TECH STACK -->
+      <div class="stack-section">
+        <p class="label">Tech Stack</p>
+        <div class="stack-grid">
+
+          <div class="stack-group">
+            <p class="stack-cat">Programming</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+              <span class="ti"><img src="assets/images/icons/cplusplus.svg" alt="">C++</span>
+              <span class="ti"><img src="assets/images/icons/javascript.svg" alt="">JavaScript</span>
+              <span class="ti"><img src="assets/images/icons/qt.svg" alt="">Qt</span>
+              <span class="ti">SQL</span>
+            </div>
+          </div>
+
+          <div class="stack-group">
+            <p class="stack-cat">ML & Data</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/pytorch.svg" alt="">PyTorch</span>
+              <span class="ti"><img src="assets/images/icons/numpy.svg" alt="">NumPy</span>
+            </div>
+          </div>
+
+          <div class="stack-group">
+            <p class="stack-cat">VFX & 3D</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+              <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Maya</span>
+              <span class="ti"><img src="assets/images/icons/blender.svg" alt="">Blender</span>
+              <span class="ti">Nuke</span>
+              <span class="ti">Ziva</span>
+            </div>
+          </div>
+
+          <div class="stack-group">
+            <p class="stack-cat">Rendering</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Arnold</span>
+              <span class="ti">V-Ray</span>
+              <span class="ti">Redshift</span>
+            </div>
+          </div>
+
+          <div class="stack-group">
+            <p class="stack-cat">Pipeline & Engines</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/shotgrid.svg" alt="">ShotGrid</span>
+              <span class="ti"><img src="assets/images/icons/unrealengine.svg" alt="">Unreal Engine</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-name">David Allan</span>
+    <span>Technical Director · VES Award Winner</span>
+    <span>david.pal.allan@gmail.com</span>
+  </footer>
+
+</body>
+</html>

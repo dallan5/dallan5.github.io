@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Queen Harpy — David Allan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* ── Lightbox ── */
+    .lb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); z-index:999; cursor:zoom-out; align-items:center; justify-content:center; }
+    .lb-overlay.open { display:flex; }
+    .lb-overlay img { max-width:92vw; max-height:92vh; object-fit:contain; box-shadow:0 4px 40px rgba(0,0,0,.6); }
+    .lb-close { position:fixed; top:20px; right:26px; font-size:28px; color:#fff; cursor:pointer; opacity:.7; line-height:1; user-select:none; }
+    .lb-close:hover { opacity:1; }
+
+    /* Clickable images */
+    .zoomable { cursor:zoom-in; }
+
+    /* Ceremony photo */
+    .photo-wrap { border: 1px solid var(--rule); overflow: hidden; margin-top: 40px; }
+    .photo-wrap img { width: 100%; display: block; max-height: 520px; object-fit: cover; object-position: center top; }
+    .photo-cap { padding: 10px 16px; background: var(--bg-card); border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-light); letter-spacing: 0.06em; }
+
+    .placeholder-note { border: 1px dashed var(--rule); padding: 20px; font-size: 12px; color: var(--ink-light); margin-top: 32px; font-family: monospace; }
+
+    /* Show image */
+    .show-img-wrap { border: 1px solid var(--rule); overflow: hidden; margin: 24px 0; }
+    .show-img-wrap img { width: 100%; display: block; max-height: 340px; object-fit: cover; }
+    .show-img-cap { padding: 10px 16px; background: var(--bg-card); border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-light); letter-spacing: 0.06em; }
+
+    /* Award callout */
+    .award-callout { background: var(--ink); color: #e8e4dc; padding: 40px 48px; margin: 32px 0; display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center; }
+    .award-title { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #b8960c; margin-bottom: 8px; }
+    .award-name { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.1; color: #e8e4dc; }
+    .award-sub { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a756e; margin-top: 8px; }
+    .award-desc { font-size: 13.5px; color: #9a9590; line-height: 1.75; }
+
+    /* Credits list */
+    .credits-list { list-style: none; }
+    .credit-row { display: flex; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; }
+    .credit-row:first-child { border-top: 1px solid var(--rule); }
+    .credit-year { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--ink-light); min-width: 44px; padding-top: 2px; }
+    .credit-info {}
+    .credit-name { font-family: var(--font-display); font-size: 17px; font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+    .credit-role { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 4px; }
+    .credit-note { font-size: 13px; color: var(--ink-mid); }
+    .badge-sm { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 2px 7px; margin-right: 6px; vertical-align: middle; }
+
+    @media (max-width: 640px) {
+      .award-callout { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">← David Allan</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="job-chain.html">Job Chain</a></li>
+      <li><a href="hdri-ml.html">HDRI ML</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="deep-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">David Allan</a> / Projects / Queen Harpy</p>
+      <h1 class="deep-title">Queen<br>Harpy</h1>
+      <p class="deep-sub">VES Award · Ronja, the Robber's Daughter · ILP 2024</p>
+      <p class="deep-lede">Feather grooming, muscle and feather simulation, and full lookdev. VES Award 2025 — Outstanding Character in an Episode.</p>
+    </div>
+
+    <!-- CEREMONY PHOTOS -->
+    <div class="wrap">
+      <div class="photo-wrap">
+        <img src="assets/images/ves/ceremony.jpg" alt="VES Awards ceremony — David Allan with the ILP team" class="zoomable" onclick="openLB(this)">
+        <p class="photo-cap">23rd Annual VES Awards · 2025 · Outstanding Character in an Episode — Queen Harpy, Ronja the Robber's Daughter</p>
+      </div>
+      <div class="photo-wrap" style="margin-top: 16px;">
+        <img src="assets/images/ves/ceremony2.jpeg" alt="VES Awards — on stage at the 23rd Annual VES Awards" class="zoomable" onclick="openLB(this)" onerror="this.closest('.photo-wrap').style.display='none'">
+        <p class="photo-cap">On stage · 23rd Annual VES Awards · Los Angeles · 2025</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="wrap">
+
+      <!-- VES AWARD -->
+      <div class="article-block">
+        <p class="block-label">Recognition</p>
+        <h2 class="block-heading">VES Award</h2>
+        <hr class="block-rule">
+
+        <div class="award-callout">
+          <div>
+            <a href="https://vesglobal.org/press-releases/23rd-annual-ves-awards-winners/" target="_blank" style="display:inline-block; margin-bottom: 20px;">
+              <img src="assets/images/icons/ves-logo.png" alt="Visual Effects Society" style="height: 44px; width: auto; filter: brightness(0) invert(1); opacity: 0.9;">
+            </a>
+            <p class="award-title">23rd Annual VES Awards · 2025</p>
+            <p class="award-name">Outstanding Character<br>in an Episode</p>
+            <p class="award-sub">Queen Harpy · Ronja, the Robber's Daughter</p>
+          </div>
+          <div>
+            <p class="award-desc">Feather grooming, muscle and feather simulation, and lookdev for the Queen Harpy. The character was automated through Job Chain — from a single ShotGrid right-click, animators received a fully simulated, groomed, and lit render without TD involvement.</p>
+            <a href="https://vesglobal.org/press-releases/23rd-annual-ves-awards-winners/" target="_blank" style="display:inline-block; margin-top: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9a9590; border-bottom: 1px solid #5a5550; padding-bottom: 1px; text-decoration: none;">Official announcement →</a>
+          </div>
+        </div>
+
+        <p class="prose" style="margin-top: 20px;">Also: VES member and sitting on the 2026 VES Awards Nomination Panel.</p>
+      </div>
+
+      <!-- RONJA WORK -->
+      <div class="article-block" id="ronja">
+        <p class="block-label">Ronja, the Robber's Daughter · 2024</p>
+        <h2 class="block-heading">Queen Harpy — Technical Work</h2>
+        <hr class="block-rule">
+
+        <div class="show-img-wrap">
+          <img src="assets/images/ves/ronja-creature-d.jpg" alt="Queen Harpy — atmospheric render" class="zoomable" onclick="openLB(this)" style="max-height: 480px; object-fit: cover; object-position: center;">
+          <p class="show-img-cap">Queen Harpy · Ronja, the Robber's Daughter · VFX by Important Looking Pirates</p>
+        </div>
+
+        <p class="prose">Led the full technical lifecycle of the Queen Harpy: reference gathering, lookdev and shading, feather grooming, muscle setup, and feather simulation. Pipeline automation via Job Chain reduced the groom-to-render loop to a single ShotGrid action for animators.</p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
+          <div class="show-img-wrap" style="margin: 0;">
+            <img src="assets/images/ves/ronja-creature-b.jpg" alt="Queen Harpy — grey render" class="zoomable" onclick="openLB(this)" style="max-height: 320px; object-fit: cover;">
+            <p class="show-img-cap">Grey render — muscle and feather geometry</p>
+          </div>
+          <div class="show-img-wrap" style="margin: 0;">
+            <img src="assets/images/ves/ronja-creature-c.jpg" alt="Queen Harpy — full render" class="zoomable" onclick="openLB(this)" style="max-height: 320px; object-fit: cover;">
+            <p class="show-img-cap">Full render — final lookdev</p>
+          </div>
+        </div>
+
+        <p class="prose" style="margin-top: 20px;">Also: VES member and on the 2026 VES Awards Nomination Panel.</p>
+
+        <div class="tech-row" style="margin-top: 20px;">
+          <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+          <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+          <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Arnold</span>
+          <span class="ti">ShotGrid</span>
+        </div>
+
+        <div class="tag-row">
+          <span class="tag">Feather Grooming</span>
+          <span class="tag">Muscle Sim</span>
+          <span class="tag">Feather Sim</span>
+          <span class="tag">Lookdev</span>
+          <span class="tag">Job Chain</span>
+        </div>
+      </div>
+
+      <!-- ALL CREDITS -->
+      <div class="article-block">
+        <p class="block-label">Full credits</p>
+        <h2 class="block-heading">All Productions</h2>
+        <hr class="block-rule">
+
+        <ul class="credits-list">
+          <li class="credit-row" id="lastofus">
+            <span class="credit-year">2025</span>
+            <div class="credit-info">
+              <div class="credit-name">The Last of Us</div>
+              <div class="credit-role">ILP</div>
+            </div>
+          </li>
+          <li class="credit-row" id="indiana">
+            <span class="credit-year">2023</span>
+            <div class="credit-info">
+              <div class="credit-name">Indiana Jones and the Dial of Destiny</div>
+              <div class="credit-role">Groom & CFX TD · ILP</div>
+              <p class="credit-note">Grooming and hair simulation pipeline. Caching and data management for character assets.</p>
+            </div>
+          </li>
+          <li class="credit-row" id="strangerthings">
+            <span class="credit-year">2022</span>
+            <div class="credit-info">
+              <div class="credit-name"><span class="badge-sm">VES Nom.</span>Stranger Things, Season 4</div>
+              <div class="credit-role">CFX TD · ILP</div>
+              <p class="credit-note">CFX pipeline and muscle simulation for Demogorgons and Demodogs — muscle, fascia, and skin-sliding systems at production scale.</p>
+            </div>
+          </li>
+          <li class="credit-row" id="slumberland">
+            <span class="credit-year">2022</span>
+            <div class="credit-info">
+              <div class="credit-name">Slumberland</div>
+              <div class="credit-role">ILP</div>
+            </div>
+          </li>
+          <li class="credit-row" id="sandman">
+            <span class="credit-year">2022</span>
+            <div class="credit-info">
+              <div class="credit-name">The Sandman</div>
+              <div class="credit-role">Groom & CFX TD · ILP</div>
+              <p class="credit-note">Groom and CFX pipeline work across the series.</p>
+            </div>
+          </li>
+          <li class="credit-row" id="battlefield">
+            <span class="credit-year">2021</span>
+            <div class="credit-info">
+              <div class="credit-name">Battlefield 2042: Exodus</div>
+              <div class="credit-role">ILP</div>
+            </div>
+          </li>
+          <li class="credit-row" id="farcry">
+            <span class="credit-year">2021</span>
+            <div class="credit-info">
+              <div class="credit-name">Far Cry 6: Chicharron Run</div>
+              <div class="credit-role">ILP</div>
+            </div>
+          </li>
+          <li class="credit-row" id="mandalorian">
+            <span class="credit-year">2020</span>
+            <div class="credit-info">
+              <div class="credit-name">Star Wars: The Mandalorian, Season 2</div>
+              <div class="credit-role">Lighting TD · ILP</div>
+              <p class="credit-note">Hero creature lighting and lookdev across 4 episodes, including the Cyclops. Environment work.</p>
+            </div>
+          </li>
+          <li class="credit-row" id="westworld">
+            <span class="credit-year">2020</span>
+            <div class="credit-info">
+              <div class="credit-name">Westworld, Season 3</div>
+              <div class="credit-role">Lighting TD · ILP</div>
+              <p class="credit-note">Hero lighting on Dolores across the season.</p>
+            </div>
+          </li>
+          <li class="credit-row" id="lostinspace">
+            <span class="credit-year">2019</span>
+            <div class="credit-info">
+              <div class="credit-name">Lost in Space, Season 2</div>
+              <div class="credit-role">Lighting TD · ILP</div>
+              <p class="credit-note">Hero environment lighting across 10 episodes. Water sims and volumetrics.</p>
+            </div>
+          </li>
+          <li class="credit-row" id="jurassicworld">
+            <span class="credit-year">2018</span>
+            <div class="credit-info">
+              <div class="credit-name">Jurassic World: Fallen Kingdom</div>
+              <div class="credit-role">3D Generalist / Lighting TD · ILP</div>
+              <p class="credit-note">Lighting, lookdev, and environment work on creature and environment sequences.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="page-nav">
+      <a href="index.html#work" class="pnav-link">← All Work</a>
+      <a href="job-chain.html" class="pnav-link">Job Chain →</a>
+    </div>
+  </div>
+
+  <!-- Lightbox overlay -->
+  <div class="lb-overlay" id="lb" onclick="closeLB()">
+    <span class="lb-close" onclick="closeLB()">✕</span>
+    <img id="lb-img" src="" alt="">
+  </div>
+  <script>
+    function openLB(el) {
+      document.getElementById('lb-img').src = el.src;
+      document.getElementById('lb').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLB() {
+      document.getElementById('lb').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+  </script>
+
+  <footer>
+    <span class="footer-name">David Allan</span>
+    <span>Technical Director · VES Award Winner</span>
+    <span><a href="mailto:david.pal.allan@gmail.com" style="color: inherit;">david.pal.allan@gmail.com</a></span>
+  </footer>
+
+</body>
+</html>

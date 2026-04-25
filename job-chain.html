@@ -58,7 +58,6 @@
       <h1 class="deep-title">Job Chain</h1>
       <p class="deep-sub">Pipeline Automation Framework · Python · ILP, 2020–2025</p>
       <p class="deep-lede">Job Chain is a node-based automation framework for VFX pipelines. It lets a workflow be described as a graph of operations — open a workfile, set parameters, import a publish, run a sim, export, submit to the farm — and executes that graph inside whichever DCC the work belongs to. The same chain definition runs in Houdini, Maya or Blender; the DCC-specific behaviour is provided by a software plugin layer underneath.</p>
-      <p class="deep-lede" style="margin-top: 14px;">This page is documentation, not a pitch — it walks through what Job Chain is, how the architecture works, and what kinds of production problems it ended up handling.</p>
     </div>
   </div>
 
@@ -149,9 +148,9 @@
       <!-- DCC PLUGINS -->
       <div class="article-block">
         <p class="block-label">Software plugin layer</p>
-        <h2 class="block-heading">Three DCCs supported</h2>
+        <h2 class="block-heading">Supported DCCs</h2>
         <hr class="block-rule">
-        <p class="prose">Each DCC contributes one software plugin. The plugins implement the same set of process overrides — open, save, parameter handling, publish import, output submission — using each application's native API. From the chain's perspective the operations are identical; only the implementation differs.</p>
+        <p class="prose">Houdini, Maya and Blender. Each has a software plugin that implements every process; the same chain definition runs identically in all three.</p>
 
         <div class="dcc-row">
           <div class="dcc-card">
@@ -159,21 +158,21 @@
               <img src="assets/images/icons/houdini.svg" alt="">
               <div class="dcc-name">Houdini</div>
             </div>
-            <p class="dcc-desc">Primary authoring environment. Chains live as ROP networks inside Houdini and serialise to YAML at submission. Houdini-specific operations include HDA packaging and the <code>SubmitToMonster</code> output ROP for farm dispatch.</p>
+            <p class="dcc-desc">Primary authoring environment.</p>
           </div>
           <div class="dcc-card">
             <div class="dcc-icon">
               <img src="assets/images/icons/autodesk.svg" alt="">
               <div class="dcc-name">Maya</div>
             </div>
-            <p class="dcc-desc">Used heavily by character and rigging. The Maya software plugin maps <code>HandleParameters</code> onto Maya's attribute system and provides Maya-native publish and import behaviour. Chains submitted from Houdini execute inside Maya sessions when their nodes resolve to Maya operations.</p>
+            <p class="dcc-desc">Full process parity.</p>
           </div>
           <div class="dcc-card">
             <div class="dcc-icon">
               <img src="assets/images/icons/blender.svg" alt="">
               <div class="dcc-name">Blender</div>
             </div>
-            <p class="dcc-desc">Same chain definitions, Blender execution. The Blender software plugin handles environment setup, scene I/O and context application, so departments using Blender share the same automation surface as the rest of the studio.</p>
+            <p class="dcc-desc">Full process parity.</p>
           </div>
         </div>
       </div>
@@ -185,9 +184,9 @@
         <hr class="block-rule">
         <p class="prose">Each node executes one or more processes. The set below is what ships with Job Chain. Each one is configured by parameters on the node — no code is required to use them, and any of them can be invoked from any of the supported DCCs as long as a software plugin override exists. Adding a process to a node is a single dropdown:</p>
 
-        <figure style="margin: 20px auto 4px; max-width: 380px; border: 1px solid var(--rule); background: var(--bg-card);">
+        <figure style="margin: 20px 0 4px; border: 1px solid var(--rule); background: var(--bg-card);">
           <img src="assets/images/job-chain/menu.jpeg" alt="Job Chain — process selection dropdown menu" style="width: 100%; display: block;" class="zoomable" onclick="openLB(this)">
-          <figcaption style="padding: 8px 12px; font-size: 11px; color: var(--ink-light); border-top: 1px solid var(--rule); letter-spacing: 0.04em;">Process dropdown — selecting which process plugin a node should run</figcaption>
+          <figcaption style="padding: 10px 16px; font-size: 11px; color: var(--ink-light); border-top: 1px solid var(--rule); letter-spacing: 0.06em;">Process dropdown — selecting which process plugin a node should run</figcaption>
         </figure>
 
         <table class="process-table" style="margin-top: 24px;">

@@ -56,8 +56,8 @@
     <div class="wrap">
       <p class="breadcrumb"><a href="index.html">David Allan</a> / ILP Work / Job Chain</p>
       <h1 class="deep-title">Job Chain</h1>
-      <p class="deep-sub">Pipeline Automation Framework · Python · ILP, 2020–2025</p>
-      <p class="deep-lede">Job Chain is a node-based automation framework for VFX pipelines. It lets a workflow be described as a graph of operations — open a workfile, set parameters, import a publish, run a sim, export, submit to the farm — and executes that graph inside whichever DCC the work belongs to. The same chain definition runs in Houdini, Maya or Blender; the DCC-specific behaviour is provided by a software plugin layer underneath.</p>
+      <p class="deep-sub">Pipeline Automation Framework · Python · ILP, 2022–2024</p>
+      <p class="deep-lede">I designed and built Job Chain at ILP. The first iteration shipped during Stranger Things Season 4 in 2022; it matured into the framework in its current form during Ronja, the Robber's Daughter in 2024. It's a node-based automation framework for VFX pipelines — workflows described as graphs of operations (open a workfile, set parameters, import a publish, run a sim, export, submit to the farm) that execute inside whichever DCC the work belongs to. The same chain definition runs in Houdini, Maya or Blender; the DCC-specific behaviour is provided by a software plugin layer underneath. Other TDs built tools and workflows on top of the framework as it became the studio's pipeline backbone.</p>
     </div>
   </div>
 
@@ -103,6 +103,52 @@
     </div>
 
     <div class="wrap" style="margin-top: 48px;">
+
+      <!-- CASE STUDY: GENERATE GROOM -->
+      <div class="article-block">
+        <p class="block-label">Case study</p>
+        <h2 class="block-heading">Generate Groom — Ronja's Queen Harpy</h2>
+        <hr class="block-rule">
+        <p class="prose">The clearest illustration of what Job Chain made possible is a tool I built for Ronja's <a href="ves-award.html">Queen Harpy</a> called <strong>Generate Groom</strong>, now used on every CFX show at the studio.</p>
+        <p class="prose" style="margin-top: 14px;">For a creature this design-driven, animators needed to iterate against fully groomed, simulated, lit and comped renders — not bare anim playblasts. Historically that meant multi-week handoffs through CFX, Groom, Lighting and Comp. We needed it overnight.</p>
+        <p class="prose" style="margin-top: 14px;">Generate Groom is a single ShotGrid action animators trigger against any of their animation versions. Submit, choose options, walk away. Underneath, the chain runs end to end:</p>
+
+        <figure style="margin: 24px auto 0; max-width: 460px; border: 1px solid var(--rule); background: var(--bg-card);">
+          <img src="assets/images/cfx-groom-pipeline/cfx-groom-pipeline.png" alt="Generate Groom — ShotGrid version selection UI" style="width: 100%; display: block;" class="zoomable" onclick="openLB(this)">
+          <figcaption style="padding: 8px 12px; font-size: 11px; color: var(--ink-light); border-top: 1px solid var(--rule); letter-spacing: 0.04em;">Generate Groom UI — ShotGrid version selection and shot options</figcaption>
+        </figure>
+
+        <div class="feature-grid" style="margin-top: 20px;">
+          <div class="feature">
+            <div class="feature-name">1 · Pull animation</div>
+            <p class="feature-desc">The chosen animation version is resolved from context and brought into the groom workfile.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">2 · Generate groom</div>
+            <p class="feature-desc">Feather grooming runs against the deformed mesh. Closeup option swaps in higher-detail groom presets when needed.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">3 · Simulate</div>
+            <p class="feature-desc">Feather and muscle simulation runs. A bypass option swaps the dynamic sim for a simple deform when the secondaries are misbehaving on a shot.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">4 · Light</div>
+            <p class="feature-desc">Result is brought into a lighting scene with the show's light template applied, then rendered.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">5 · Slap comp</div>
+            <p class="feature-desc">Renders are slap-comped in Nuke against the show's template comp, producing a reviewable image without manual setup.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">6 · Daily</div>
+            <p class="feature-desc">Published to ShotGrid and marked for review. Animator submits in the evening, reviews in the morning.</p>
+          </div>
+        </div>
+
+        <p class="prose" style="margin-top: 22px;">When a shot had multiple creatures, the system handled them in one submission. Each character ran its own groom and simulation pass, then all of them were merged into a single lighting scene against the plate, lit and rendered together so the interactions read correctly, and slap-comped as one image. Some shots ran with up to fifty vittras in frame; the same submission handled them all. Animators iterated on creature interactions in context — not as separate single-character renders to be reassembled later.</p>
+
+        <p class="prose" style="margin-top: 14px;">It was the first time at the studio that the full CFX → Groom → Lighting → Comp loop had been authored as one automation. CFX iteration moved from a multi-department, multi-week handoff to something animators triggered themselves and reviewed the next morning. The cost of trying things dropped by an order of magnitude. Used on every CFX show since.</p>
+      </div>
 
       <!-- ARCHITECTURE -->
       <div class="article-block">
@@ -326,7 +372,7 @@
           </div>
           <div class="feature">
             <div class="feature-name">Groom simulation</div>
-            <p class="feature-desc">Feather and fur grooming chains — open the groom file, ingest the latest CFX cache, simulate, cache, publish. The full case study for Ronja's Queen Harpy is below.</p>
+            <p class="feature-desc">Feather and fur grooming chains — open the groom file, ingest the latest CFX cache, simulate, cache, publish. Full case study above: Generate Groom on Ronja's Queen Harpy.</p>
           </div>
           <div class="feature">
             <div class="feature-name">Auto slap comp</div>
@@ -342,7 +388,7 @@
           </div>
         </div>
 
-        <p class="prose" style="margin-top: 24px;">Built and maintained over five years on production at ILP, deployed across all active shows during that period.</p>
+        <p class="prose" style="margin-top: 24px;">Built and matured across multiple shows at ILP between 2022 and 2024, and deployed across all active shows during that period.</p>
 
         <div class="tech-row" style="margin-top: 20px;">
           <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
@@ -353,52 +399,6 @@
           <span class="ti">YAML</span>
           <span class="ti">Render Farm (Monster)</span>
         </div>
-      </div>
-
-      <!-- CASE STUDY: GENERATE GROOM -->
-      <div class="article-block">
-        <p class="block-label">Case study</p>
-        <h2 class="block-heading">Generate Groom — Ronja's Queen Harpy</h2>
-        <hr class="block-rule">
-        <p class="prose">The clearest illustration of what Job Chain made possible is a tool I built for Ronja's <a href="ves-award.html">Queen Harpy</a> called <strong>Generate Groom</strong>, now used on every CFX show at the studio.</p>
-        <p class="prose" style="margin-top: 14px;">For a creature this design-driven, animators needed to iterate against fully groomed, simulated, lit and comped renders — not bare anim playblasts. Historically that meant multi-week handoffs through CFX, Groom, Lighting and Comp. We needed it overnight.</p>
-        <p class="prose" style="margin-top: 14px;">Generate Groom is a single ShotGrid action animators trigger against any of their animation versions. Submit, choose options, walk away. Underneath, the chain runs end to end:</p>
-
-        <figure style="margin: 24px auto 0; max-width: 460px; border: 1px solid var(--rule); background: var(--bg-card);">
-          <img src="assets/images/cfx-groom-pipeline/cfx-groom-pipeline.png" alt="Generate Groom — ShotGrid version selection UI" style="width: 100%; display: block;" class="zoomable" onclick="openLB(this)">
-          <figcaption style="padding: 8px 12px; font-size: 11px; color: var(--ink-light); border-top: 1px solid var(--rule); letter-spacing: 0.04em;">Generate Groom UI — ShotGrid version selection and shot options</figcaption>
-        </figure>
-
-        <div class="feature-grid" style="margin-top: 20px;">
-          <div class="feature">
-            <div class="feature-name">1 · Pull animation</div>
-            <p class="feature-desc">The chosen animation version is resolved from context and brought into the groom workfile.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-name">2 · Generate groom</div>
-            <p class="feature-desc">Feather grooming runs against the deformed mesh. Closeup option swaps in higher-detail groom presets when needed.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-name">3 · Simulate</div>
-            <p class="feature-desc">Feather and muscle simulation runs. A bypass option swaps the dynamic sim for a simple deform when the secondaries are misbehaving on a shot.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-name">4 · Light</div>
-            <p class="feature-desc">Result is brought into a lighting scene with the show's light template applied, then rendered.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-name">5 · Slap comp</div>
-            <p class="feature-desc">Renders are slap-comped in Nuke against the show's template comp, producing a reviewable image without manual setup.</p>
-          </div>
-          <div class="feature">
-            <div class="feature-name">6 · Daily</div>
-            <p class="feature-desc">Published to ShotGrid and marked for review. Animator submits in the evening, reviews in the morning.</p>
-          </div>
-        </div>
-
-        <p class="prose" style="margin-top: 22px;">When a shot had multiple creatures, the system handled them in one submission. Each character ran its own groom and simulation pass, then all of them were merged into a single lighting scene against the plate, lit and rendered together so the interactions read correctly, and slap-comped as one image. Some shots ran with up to fifty vittras in frame; the same submission handled them all. Animators iterated on creature interactions in context — not as separate single-character renders to be reassembled later.</p>
-
-        <p class="prose" style="margin-top: 14px;">It was the first time at the studio that the full CFX → Groom → Lighting → Comp loop had been authored as one automation. CFX iteration moved from a multi-department, multi-week handoff to something animators triggered themselves and reviewed the next morning. The cost of trying things dropped by an order of magnitude. Used on every CFX show since.</p>
       </div>
 
       <!-- CASE STUDY: AUTO SLAP -->

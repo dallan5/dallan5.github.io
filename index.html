@@ -10,10 +10,10 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://dallan5.github.io/">
   <meta property="og:title" content="David Allan — Pipeline & CG Technical Director">
-  <meta property="og:description" content="8+ years at ILP on Star Wars, Jurassic World, and Stranger Things. VES Award winner. Pipeline tools, creature/CFX systems, and ML research.">
+  <meta property="og:description" content="CG Technical Director — pipeline tools, creature/CFX systems, and groom work at ILP. VES Award 2025.">
   <meta property="og:image" content="https://dallan5.github.io/assets/images/ves/ronja-creature-d.jpg">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="description" content="8+ years at ILP on Star Wars, Jurassic World, and Stranger Things. VES Award winner. Pipeline tools, creature/CFX systems, and ML research.">
+  <meta name="description" content="CG Technical Director — pipeline tools, creature/CFX systems, and groom work at ILP. VES Award 2025.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,6 +46,8 @@
 
     /* ── Projects grid ── */
     .projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); }
+    .projects-grid--4 { grid-template-columns: repeat(2, 1fr); }
+    .projects-grid--2 { grid-template-columns: repeat(2, 1fr); }
     .project-card { background: var(--bg); padding: 28px; transition: background .18s; }
     .project-card:hover { background: var(--bg-card); }
     .project-name { font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
@@ -82,14 +84,20 @@
     @media (max-width: 1100px) {
       .credits-grid { grid-template-columns: repeat(4, 1fr); }
     }
+    @media (max-width: 1200px) {
+      .projects-grid--4 { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 900px) {
       .credits-grid { grid-template-columns: repeat(3, 1fr); }
       .projects-grid { grid-template-columns: 1fr 1fr; }
+      .projects-grid--4 { grid-template-columns: repeat(2, 1fr); }
       .about-grid { grid-template-columns: 1fr; gap: 32px; }
     }
     @media (max-width: 560px) {
       .credits-grid { grid-template-columns: repeat(2, 1fr); }
-      .projects-grid { grid-template-columns: 1fr; }
+      .projects-grid,
+      .projects-grid--4,
+      .projects-grid--2 { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -99,7 +107,8 @@
     <a class="nav-name" href="#hero">David Allan</a>
     <ul class="nav-links">
       <li><a href="#work">Work</a></li>
-      <li><a href="#projects">Projects</a></li>
+      <li><a href="#projects">ILP Work</a></li>
+      <li><a href="#personal">Personal</a></li>
       <li><a href="#about">About</a></li>
     </ul>
   </nav>
@@ -110,18 +119,28 @@
       <h1 class="hero-name">David Allan</h1>
       <p class="hero-role">Pipeline & CG Technical Director</p>
       <p class="hero-award">VES Award Winner · Available June 2026</p>
-      <p class="hero-bio">8+ years at ILP building creature and simulation systems for Star Wars, Jurassic World, and Stranger Things — and the pipeline tools that made them faster to produce.</p>
+      <p class="hero-bio">CG Technical Director at Important Looking Pirates (Stockholm), 2017–2025. Pipeline systems, creature/CFX work, and groom — Stranger Things, Indiana Jones, Ronja, the Mandalorian. Currently studying CS, Data Science & AI at UC Irvine.</p>
       <div class="hero-ctas">
         <a href="#work" class="btn btn-fill">Watch Reel</a>
         <a href="assets/david-allan-cv.pdf" download class="btn">Download CV</a>
         <a href="https://www.linkedin.com/in/davidpallan" target="_blank" class="btn">LinkedIn</a>
         <a href="mailto:david.pal.allan@gmail.com" class="btn">Get in Touch</a>
       </div>
-      <div style="margin-top: 48px;">
-        <a href="ves-award.html" style="display:inline-block; text-decoration:none;">
-          <img src="assets/images/icons/ves-logo.png" alt="Visual Effects Society Award" style="height: 56px; width: auto;">
-        </a>
-      </div>
+    </div>
+
+    <!-- VES AWARD CALLOUT -->
+    <div class="wrap" style="margin-top: 48px;">
+      <a href="ves-award.html" style="display:block; text-decoration:none; color:inherit;">
+        <div class="award-callout">
+          <img src="assets/images/icons/ves-logo.png" alt="Visual Effects Society" style="height: 32px; width: auto; filter: brightness(0) invert(1); opacity: 0.9; display:block;">
+          <div>
+            <p class="award-title">23rd Annual VES Awards · 2025</p>
+            <p class="award-name">Outstanding Character in an Episode</p>
+            <p class="award-sub">Queen Harpy · Ronja, the Robber's Daughter</p>
+          </div>
+          <span class="award-link">More →</span>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -265,24 +284,24 @@
     </div>
   </section>
 
-  <!-- PROJECTS -->
+  <!-- PROJECTS — PROFESSIONAL / ILP -->
   <section id="projects">
     <div class="wrap">
-      <p class="label">Pipeline, Production & ML</p>
-      <h2 class="heading">Projects</h2>
+      <p class="label">Professional · ILP, 2017–2025</p>
+      <h2 class="heading">ILP Work</h2>
       <hr class="rule">
-      <div class="projects-grid">
+      <div class="projects-grid projects-grid--4">
 
         <!-- Job Chain — featured -->
         <div class="project-card project-card--img">
           <a href="job-chain.html" style="display:block; color:inherit; text-decoration:none;">
             <div class="proj-img-wrap">
-              <img src="assets/images/job-chain/execution-flow-p1.jpg" alt="Job Chain execution flow" class="proj-img" style="object-position: top;">
+              <img src="assets/images/job-chain/nodes.jpeg" alt="Job Chain — node graph" class="proj-img" style="object-position: center;">
             </div>
             <div class="proj-body">
               <div class="project-name">Job Chain</div>
-              <div class="project-type">Automation Framework · ILP 2020–2025</div>
-              <p class="project-desc">Node-based pipeline framework enabling artists to build and trigger complex, multi-step workflows without code. Studio-wide adoption at ILP across all active shows.</p>
+              <div class="project-type">Automation Framework · 2020–2025</div>
+              <p class="project-desc">A node-based automation framework for VFX pipelines. Process plugins describe abstract operations — open a workfile, run a sim, export a publish, submit to the farm — and software plugins execute them inside Houdini, Maya or Blender.</p>
               <div class="tech-row">
                 <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
                 <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
@@ -290,27 +309,7 @@
                 <span class="ti"><img src="assets/images/icons/blender.svg" alt="">Blender</span>
                 <span class="ti"><img src="assets/images/icons/shotgrid.svg" alt="">ShotGrid</span>
               </div>
-              <span class="more" style="margin-top:18px;">Deep dive →</span>
-            </div>
-          </a>
-        </div>
-
-        <!-- HDRI from Backplate — featured -->
-        <div class="project-card project-card--img">
-          <a href="hdri-ml.html" style="display:block; color:inherit; text-decoration:none;">
-            <div class="proj-img-wrap" style="background:#1a1a1a;">
-              <img src="assets/images/hdri-backplate/epoch_0099_sample_2.png" alt="HDRI from Backplate — generated panorama" class="proj-img" style="object-position: top;">
-            </div>
-            <div class="proj-body">
-              <div class="project-name">HDRI from Backplate</div>
-              <div class="project-type">Machine Learning · UC Irvine · 2025–2026</div>
-              <p class="project-desc">Pix2Pix GAN trained to predict full 360° HDRI lighting environments from a single backplate photograph — removing the need to capture HDRIs on set.</p>
-              <div class="tech-row">
-                <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
-                <span class="ti"><img src="assets/images/icons/pytorch.svg" alt="">PyTorch</span>
-                <span class="ti"><img src="assets/images/icons/numpy.svg" alt="">NumPy</span>
-              </div>
-              <span class="more" style="margin-top:18px;">See the results →</span>
+              <span class="more" style="margin-top:18px;">Documentation →</span>
             </div>
           </a>
         </div>
@@ -324,8 +323,8 @@
             <div class="proj-body">
               <span class="proj-badge">VES Award 2025</span>
               <div class="project-name">Queen Harpy</div>
-              <div class="project-type">Ronja, the Robber's Daughter · ILP 2024</div>
-              <p class="project-desc">Feather grooming, muscle and feather simulation, and lookdev for the Queen Harpy. Fully automated through Job Chain — animators received a lit, simulated render from a single ShotGrid action.</p>
+              <div class="project-type">Ronja, the Robber's Daughter · 2024</div>
+              <p class="project-desc">CG TD and groom artist on the Queen Harpy. Feather grooming, muscle and feather simulation, lookdev. Driven end-to-end through Job Chain — animators triggered a fully groomed, simulated and lit render from a ShotGrid action.</p>
               <div class="tech-row">
                 <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
                 <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
@@ -336,23 +335,6 @@
           </a>
         </div>
 
-        <!-- Megascan Ingestion -->
-        <div class="project-card project-card--img">
-          <div class="proj-img-wrap">
-            <img src="assets/images/megascan-library/megascan.jpeg" alt="Megascan Ingestion" class="proj-img">
-          </div>
-          <div class="proj-body">
-            <div class="project-name">Megascan Library</div>
-            <div class="project-type">Asset Management · Multi-show</div>
-            <p class="project-desc">Studio-wide library for importing and cleaning Megascan assets into Maya and Houdini. Removed hours of lookdev setup per environment, per show.</p>
-            <div class="tech-row">
-              <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
-              <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Maya</span>
-              <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
-            </div>
-          </div>
-        </div>
-
         <!-- CFX & Groom Pipeline -->
         <div class="project-card project-card--img">
           <div class="proj-img-wrap">
@@ -361,7 +343,7 @@
           <div class="proj-body">
             <div class="project-name">CFX & Groom Pipeline</div>
             <div class="project-type">Character FX · Multi-show</div>
-            <p class="project-desc">Muscle, fascia, and skin-sliding systems for creature characters across Stranger Things, Indiana Jones, and Ronja. Integrated with Job Chain for one-click sim-to-render handoffs.</p>
+            <p class="project-desc">Muscle, fascia, and skin-sliding systems for creatures on Stranger Things S4, Indiana Jones: Dial of Destiny, The Sandman, and Ronja. Caching, fetching and data-management layer feeding into Job Chain for sim-to-render handoffs.</p>
             <div class="tech-row">
               <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
               <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
@@ -369,6 +351,55 @@
               <span class="ti">Ziva</span>
             </div>
           </div>
+        </div>
+
+        <!-- Megascan Ingestion -->
+        <div class="project-card project-card--img">
+          <div class="proj-img-wrap">
+            <img src="assets/images/megascan-library/megascan.jpeg" alt="Megascan Library" class="proj-img">
+          </div>
+          <div class="proj-body">
+            <div class="project-name">Megascan Library</div>
+            <div class="project-type">Asset Management · 2017–2020</div>
+            <p class="project-desc">Standalone Python library integrated into Maya and Houdini for importing, cleaning, searching and transferring Megascan assets. Used as the studio's environment-asset entry point across multiple shows.</p>
+            <div class="tech-row">
+              <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+              <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Maya</span>
+              <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PERSONAL PROJECTS -->
+  <section id="personal">
+    <div class="wrap">
+      <p class="label">Personal · Research & Learning</p>
+      <h2 class="heading">Personal Projects</h2>
+      <hr class="rule">
+      <div class="projects-grid">
+
+        <!-- HDRI from Backplate — featured -->
+        <div class="project-card project-card--img">
+          <a href="hdri-ml.html" style="display:block; color:inherit; text-decoration:none;">
+            <div class="proj-img-wrap" style="background:#1a1a1a;">
+              <img src="assets/images/hdri-backplate/thumb.png" alt="HDRI from Backplate" class="proj-img">
+            </div>
+            <div class="proj-body">
+              <div class="project-name">HDRI from Backplate</div>
+              <div class="project-type">Machine Learning · UC Irvine · 2025–2026</div>
+              <p class="project-desc">A Pix2Pix GAN trained to predict full 360° HDRI lighting environments from a single backplate photograph. Built to explore practical ML applications inside production lighting workflows.</p>
+              <div class="tech-row">
+                <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
+                <span class="ti"><img src="assets/images/icons/pytorch.svg" alt="">PyTorch</span>
+                <span class="ti"><img src="assets/images/icons/numpy.svg" alt="">NumPy</span>
+              </div>
+              <span class="more" style="margin-top:18px;">See the results →</span>
+            </div>
+          </a>
         </div>
 
         <!-- Artemis -->
@@ -379,12 +410,32 @@
           <div class="proj-body">
             <div class="project-name">Artemis™ Virtual Production</div>
             <div class="project-type">Virtual Production · STL, UC Irvine · 2026</div>
-            <p class="project-desc">Pipeline contribution to an automated projection-mapping platform for Spatially Augmented Reality. Integrates with Unreal Engine and handles complex non-rigid surfaces.</p>
+            <p class="project-desc">Architecting a virtual production pipeline end-to-end for STL's demo stack — tracking, capture readiness and Unreal Engine runtime integration on top of Artemis™ projection-mapping technology for Spatially Augmented Reality.</p>
             <div class="tech-row">
               <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
               <span class="ti"><img src="assets/images/icons/unrealengine.svg" alt="">Unreal Engine</span>
             </div>
           </div>
+        </div>
+
+        <!-- Render Studies -->
+        <div class="project-card project-card--img">
+          <a href="render-studies.html" style="display:block; color:inherit; text-decoration:none;">
+            <div class="proj-img-wrap">
+              <img src="assets/images/blender/david-allan-img-8334.jpg" alt="Render Studies — ramen" class="proj-img">
+            </div>
+            <div class="proj-body">
+              <div class="project-name">Render Studies</div>
+              <div class="project-type">Personal · Blender Cycles · Houdini</div>
+              <p class="project-desc">Personal renders made between productions — studies in caustics, simulation and material work. Mostly procedurally modelled in Houdini, lit and rendered in Blender Cycles.</p>
+              <div class="tech-row">
+                <span class="ti"><img src="assets/images/icons/blender.svg" alt="">Blender</span>
+                <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+                <span class="ti">Substance</span>
+              </div>
+              <span class="more" style="margin-top:18px;">See the renders →</span>
+            </div>
+          </a>
         </div>
 
       </div>

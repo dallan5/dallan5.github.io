@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Render Studies — David Allan</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dallan5.github.io/render-studies.html">
+  <meta property="og:title" content="Render Studies — David Allan">
+  <meta property="og:description" content="Personal renders made between productions — studies in Cycles, caustics, simulation and material work, mostly modelled procedurally in Houdini.">
+  <meta property="og:image" content="https://dallan5.github.io/assets/images/blender/david-allan-img-8334.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="description" content="Personal renders made between productions — studies in Cycles, caustics, simulation and material work, mostly modelled procedurally in Houdini.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    .render-frame { margin: 24px 0; border: 1px solid var(--rule); overflow: hidden; background: var(--bg-card); }
+    .render-frame img { width: 100%; display: block; }
+    .render-cap { padding: 10px 16px; background: var(--bg-card); border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-light); letter-spacing: 0.06em; }
+
+    /* Crop the smoothie thumb tighter on the subject — for index card use only;
+       on this page we keep the full composition. */
+    .render-frame--square { max-width: 720px; margin-left: auto; margin-right: auto; }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">← David Allan</a>
+    <ul class="nav-links">
+      <li><a href="index.html#projects">ILP Work</a></li>
+      <li><a href="index.html#personal">Personal</a></li>
+      <li><a href="job-chain.html">Job Chain</a></li>
+      <li><a href="hdri-ml.html">HDRI ML</a></li>
+      <li><a href="ves-award.html">Queen Harpy</a></li>
+    </ul>
+  </nav>
+
+  <div class="deep-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">David Allan</a> / Personal / Render Studies</p>
+      <h1 class="deep-title">Render<br>Studies</h1>
+      <p class="deep-sub">Personal · Blender Cycles · Houdini</p>
+      <p class="deep-lede">A few personal renders, made between productions. Studies in caustics, simulation, and material work — mostly modelled procedurally in Houdini, then ported and lit in Blender.</p>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="wrap">
+
+      <!-- GLASS / CAUSTICS -->
+      <div class="article-block">
+        <p class="block-label">Caustics study</p>
+        <h2 class="block-heading">Glass with ice</h2>
+        <hr class="block-rule">
+        <p class="prose">An excuse to play with caustics in Cycles. Procedural glass and ice modelled in Houdini, then lit and rendered in Blender. Mostly about getting the refraction and condensation feeling believable in low key.</p>
+
+        <div class="render-frame render-frame--square">
+          <img src="assets/images/blender/david-allan-glass-beauty-grade.jpg" alt="Glass with ice — caustics study by David Allan" class="zoomable" onclick="openLB(this)">
+          <p class="render-cap">Caustics study · Cycles · graded</p>
+        </div>
+      </div>
+
+      <!-- RAMEN / STJÄRNAN -->
+      <div class="article-block">
+        <p class="block-label">Restaurant study</p>
+        <h2 class="block-heading">Ramen — Stjärnan</h2>
+        <hr class="block-rule">
+        <p class="prose">Inspired by Stjärnan, a ramen place in Stockholm. I wanted to recreate the warm, atmospheric look of the bowls coming out of the kitchen. The noodles were simulated falling into the bowl rather than placed by hand. Textures painted in Substance Painter; everything else procedurally modelled in Houdini.</p>
+
+        <div class="render-frame">
+          <img src="assets/images/blender/david-allan-img-8334.jpg" alt="Ramen — Stjärnan-inspired render by David Allan" class="zoomable" onclick="openLB(this)">
+          <p class="render-cap">Ramen · Stjärnan-inspired · simulated noodles · Substance + Houdini → Cycles</p>
+        </div>
+      </div>
+
+      <!-- SMOOTHIE / MATERIAL STUDY -->
+      <div class="article-block">
+        <p class="block-label">Material study</p>
+        <h2 class="block-heading">Glass, cream and color</h2>
+        <hr class="block-rule">
+        <p class="prose">A study in glass shaders, whipped cream and saturated palette work — pushing how different translucent and soft materials read against a single warm backdrop. Procedural modelling in Houdini, lit in Blender.</p>
+
+        <div class="render-frame">
+          <img src="assets/images/blender/david-allan-img-2219.jpg" alt="Glass, cream and color — material study by David Allan" class="zoomable" onclick="openLB(this)">
+          <p class="render-cap">Material study · glass, cream, saturated palette · Cycles</p>
+        </div>
+      </div>
+
+      <div class="tech-row" style="margin-top: 32px;">
+        <span class="ti"><img src="assets/images/icons/blender.svg" alt="">Blender Cycles</span>
+        <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
+        <span class="ti">Substance Painter</span>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="page-nav">
+      <a href="index.html#personal" class="pnav-link">← Personal Projects</a>
+      <a href="hdri-ml.html" class="pnav-link">HDRI ML →</a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-name">David Allan</span>
+    <span>Technical Director · VES Award Winner</span>
+    <span><a href="mailto:david.pal.allan@gmail.com" style="color: inherit;">david.pal.allan@gmail.com</a></span>
+  </footer>
+
+  <!-- Lightbox overlay -->
+  <div class="lb-overlay" id="lb" onclick="closeLB()">
+    <span class="lb-close" onclick="closeLB()">✕</span>
+    <img id="lb-img" src="" alt="">
+  </div>
+  <script>
+    function openLB(el) {
+      document.getElementById('lb-img').src = el.src;
+      document.getElementById('lb').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLB() {
+      document.getElementById('lb').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLB(); });
+  </script>
+
+</body>
+</html>

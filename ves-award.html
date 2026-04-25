@@ -17,16 +17,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/style.css">
   <style>
-    /* ── Lightbox ── */
-    .lb-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.88); z-index:999; cursor:zoom-out; align-items:center; justify-content:center; }
-    .lb-overlay.open { display:flex; }
-    .lb-overlay img { max-width:92vw; max-height:92vh; object-fit:contain; box-shadow:0 4px 40px rgba(0,0,0,.6); }
-    .lb-close { position:fixed; top:20px; right:26px; font-size:28px; color:#fff; cursor:pointer; opacity:.7; line-height:1; user-select:none; }
-    .lb-close:hover { opacity:1; }
-
-    /* Clickable images */
-    .zoomable { cursor:zoom-in; }
-
     /* Ceremony photo */
     .photo-wrap { border: 1px solid var(--rule); overflow: hidden; margin-top: 40px; }
     .photo-wrap img { width: 100%; display: block; max-height: 520px; object-fit: cover; object-position: center top; }
@@ -39,12 +29,17 @@
     .show-img-wrap img { width: 100%; display: block; max-height: 340px; object-fit: cover; }
     .show-img-cap { padding: 10px 16px; background: var(--bg-card); border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-light); letter-spacing: 0.06em; }
 
-    /* Award callout */
-    .award-callout { background: var(--ink); color: #e8e4dc; padding: 40px 48px; margin: 32px 0; display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: center; }
-    .award-title { font-family: var(--font-display); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: #b8960c; margin-bottom: 8px; }
-    .award-name { font-family: var(--font-display); font-size: 34px; font-weight: 700; line-height: 1.1; color: #e8e4dc; }
-    .award-sub { font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #7a756e; margin-top: 8px; }
-    .award-desc { font-size: 13.5px; color: #9a9590; line-height: 1.75; }
+    /* Concept gallery */
+    .concept-frame { background: var(--bg-card); border: 1px solid var(--rule); overflow: hidden; margin-top: 14px; display: flex; flex-direction: column; }
+    .concept-frame img { display: block; width: 100%; height: auto; }
+    .concept-cap { padding: 9px 14px; background: var(--bg-card); border-top: 1px solid var(--rule); font-size: 11px; color: var(--ink-light); letter-spacing: 0.06em; flex: 0 0 auto; }
+    .concept-credit { margin-top: 14px; font-size: 11px; color: var(--ink-light); letter-spacing: 0.06em; }
+
+    /* Side-by-side row — image fills its cell, frames match height */
+    .concept-row { display: grid; grid-template-columns: 2.4fr 1fr; gap: 12px; margin-top: 14px; align-items: stretch; }
+    .concept-row .concept-frame { margin-top: 0; }
+    .concept-row .concept-frame img { width: 100%; height: 100%; flex: 1 1 auto; object-fit: cover; min-height: 0; }
+    @media (max-width: 700px) { .concept-row { grid-template-columns: 1fr; } }
 
     /* Credits list */
     .credits-list { list-style: none; }
@@ -57,9 +52,6 @@
     .credit-note { font-size: 13px; color: var(--ink-mid); }
     .badge-sm { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 2px 7px; margin-right: 6px; vertical-align: middle; }
 
-    @media (max-width: 640px) {
-      .award-callout { grid-template-columns: 1fr; gap: 20px; padding: 28px 24px; }
-    }
   </style>
 </head>
 <body>
@@ -68,7 +60,8 @@
     <a class="nav-back" href="index.html">← David Allan</a>
     <ul class="nav-links">
       <li><a href="index.html#work">Work</a></li>
-      <li><a href="index.html#projects">Projects</a></li>
+      <li><a href="index.html#projects">ILP Work</a></li>
+      <li><a href="index.html#personal">Personal</a></li>
       <li><a href="job-chain.html">Job Chain</a></li>
       <li><a href="hdri-ml.html">HDRI ML</a></li>
     </ul>
@@ -80,14 +73,14 @@
       <p class="breadcrumb"><a href="index.html">David Allan</a> / Projects / Queen Harpy</p>
       <h1 class="deep-title">Queen<br>Harpy</h1>
       <p class="deep-sub">VES Award · Ronja, the Robber's Daughter · ILP 2024</p>
-      <p class="deep-lede">Feather grooming, muscle and feather simulation, and full lookdev. VES Award 2025 — Outstanding Character in an Episode.</p>
+      <p class="deep-lede">Feather grooming, muscle and feather simulation, and full lookdev. VES Award 2025 — Outstanding Character in an Episode. <a href="https://vesglobal.org/press-releases/23rd-annual-ves-awards-winners/" target="_blank" style="color: var(--ink-mid); text-decoration: underline; text-decoration-color: var(--rule); font-size: 13px;">Official announcement →</a></p>
     </div>
 
     <!-- CEREMONY PHOTOS -->
     <div class="wrap">
       <div class="photo-wrap">
-        <img src="assets/images/ves/ceremony.jpg" alt="VES Awards ceremony — David Allan with the ILP team" class="zoomable" onclick="openLB(this)">
-        <p class="photo-cap">23rd Annual VES Awards · 2025 · Outstanding Character in an Episode — Queen Harpy, Ronja the Robber's Daughter</p>
+        <img src="assets/images/ves/ceremony.jpg" alt="VES Awards ceremony — David Allan with Niklas Wallén, Gustav Ahrén and Nicklas Andersson" class="zoomable" onclick="openLB(this)">
+        <p class="photo-cap">On stage with <a href="https://www.linkedin.com/in/niklas-wall%C3%A9n-863177159/" target="_blank" style="color: inherit; text-decoration: underline; text-decoration-color: var(--rule);">Niklas Wallén</a>, <a href="https://www.linkedin.com/in/gustav-ahr%C3%A9n-984656b/" target="_blank" style="color: inherit; text-decoration: underline; text-decoration-color: var(--rule);">Gustav Ahrén</a> and <a href="https://www.linkedin.com/in/nicklas-andersson-51797524b/" target="_blank" style="color: inherit; text-decoration: underline; text-decoration-color: var(--rule);">Nicklas Andersson</a> · 23rd Annual VES Awards · 2025 · Outstanding Character in an Episode</p>
       </div>
       <div class="photo-wrap" style="margin-top: 16px;">
         <img src="assets/images/ves/ceremony2.jpeg" alt="VES Awards — on stage at the 23rd Annual VES Awards" class="zoomable" onclick="openLB(this)" onerror="this.closest('.photo-wrap').style.display='none'">
@@ -99,28 +92,51 @@
   <div class="article">
     <div class="wrap">
 
-      <!-- VES AWARD -->
+      <!-- PERSONAL NOTE -->
       <div class="article-block">
-        <p class="block-label">Recognition</p>
-        <h2 class="block-heading">VES Award</h2>
+        <p class="block-label">On Ronja</p>
+        <h2 class="block-heading">An Astrid Lindgren creature</h2>
         <hr class="block-rule">
+        <p class="prose">Ronja, the Robber's Daughter is by Astrid Lindgren — one of Sweden's most beloved authors, and one of the writers whose stories shape how generations of us grow up. Being trusted to bring the vittra to screen is not something I take lightly.</p>
+        <p class="prose" style="margin-top: 14px;">I joined at the concept phase and stayed with her through to final delivery — gathering reference, helping shape the design, and then owning the technical side: feather grooming, muscle and feather simulation, lookdev, and the Job Chain automation that let her land in shots at the speed animation needed.</p>
+      </div>
 
-        <div class="award-callout">
-          <div>
-            <a href="https://vesglobal.org/press-releases/23rd-annual-ves-awards-winners/" target="_blank" style="display:inline-block; margin-bottom: 20px;">
-              <img src="assets/images/icons/ves-logo.png" alt="Visual Effects Society" style="height: 44px; width: auto; filter: brightness(0) invert(1); opacity: 0.9;">
-            </a>
-            <p class="award-title">23rd Annual VES Awards · 2025</p>
-            <p class="award-name">Outstanding Character<br>in an Episode</p>
-            <p class="award-sub">Queen Harpy · Ronja, the Robber's Daughter</p>
+      <!-- CONCEPT & DESIGN -->
+      <div class="article-block">
+        <p class="block-label">Concept &amp; design</p>
+        <h2 class="block-heading">Designing the vittra</h2>
+        <hr class="block-rule">
+        <p class="prose">The vittra started here. The pieces below are concept paintings by <a href="https://www.linkedin.com/in/niklas-wall%C3%A9n-863177159/" target="_blank">Niklas Wallén</a> from the show's discovery phase — long before any of the technical work began. They set the silhouette, the proportions, and the personality everything that followed had to live up to. <a href="https://www.artstation.com/artwork/6LZ2K0" target="_blank">See the full piece on his ArtStation →</a></p>
+
+        <div class="concept-row" style="margin-top: 24px;">
+          <div class="concept-frame">
+            <img src="assets/images/ves/concept/niklas-wallen-vittran-01.jpg" alt="Queen Harpy concept — wingspread silhouette by Niklas Wallén" class="zoomable" onclick="openLB(this)">
+            <p class="concept-cap">Wingspread silhouette · concept by Niklas Wallén</p>
           </div>
-          <div>
-            <p class="award-desc">Feather grooming, muscle and feather simulation, and lookdev for the Queen Harpy. The character was automated through Job Chain — from a single ShotGrid right-click, animators received a fully simulated, groomed, and lit render without TD involvement.</p>
-            <a href="https://vesglobal.org/press-releases/23rd-annual-ves-awards-winners/" target="_blank" style="display:inline-block; margin-top: 20px; font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #9a9590; border-bottom: 1px solid #5a5550; padding-bottom: 1px; text-decoration: none;">Official announcement →</a>
+          <div class="concept-frame">
+            <img src="assets/images/ves/concept/niklas-wallen-vittran-05.jpg" alt="Queen Harpy concept — perched form by Niklas Wallén" class="zoomable" onclick="openLB(this)">
+            <p class="concept-cap">Perched form · concept by Niklas Wallén</p>
           </div>
         </div>
 
-        <p class="prose" style="margin-top: 20px;">Also: VES member and sitting on the 2026 VES Awards Nomination Panel.</p>
+        <div class="concept-frame">
+          <img src="assets/images/ves/concept/niklas-wallen-vittran-06.jpg" alt="Queen Harpy concept — motion study by Niklas Wallén" class="zoomable" onclick="openLB(this)">
+          <p class="concept-cap">Motion study · concept by Niklas Wallén</p>
+        </div>
+
+        <p class="concept-credit">All concept art © Niklas Wallén.</p>
+      </div>
+
+
+      <!-- CHALLENGES -->
+      <div class="article-block">
+        <p class="block-label">The hard parts</p>
+        <h2 class="block-heading">Challenges</h2>
+        <hr class="block-rule">
+        <p class="prose">Several facial poses had to be hit and blended between as animation drove the vittra's expressions. Her feathers had to read in three completely different motion profiles — standing, flying, and crawling along the ground — without the system fighting us in any of them. Dialing the design and face into the groom alone took a long stretch of iteration before we felt it land.</p>
+        <p class="prose" style="margin-top: 14px;">A second hard problem was intersections. At the density we were running, feathers couldn't be allowed to pass through each other or through the body — ever — and naive simulation fought us constantly. We ended up inventing a dedicated feather-growth simulation: feathers were anchored at their roots and "grown" into position along the surface normal, laid down naturally without intersecting. The same step ran twice — once at build time so the T-pose silhouette was clean, and again per-shot to settle the groom against each frame's deformation before runtime sim took over.</p>
+        <p class="prose" style="margin-top: 14px;">A third was multi-character shots. The story put more than one creature in frame, and animators needed to iterate on those shots in context — with the right interactions, the right occlusion, the right plate. Doing that as separate single-character renders to be re-assembled later wasn't acceptable on a feedback loop this tight.</p>
+        <p class="prose" style="margin-top: 14px;">The deeper problem was the cost of iteration itself. With a creature this design-driven, animators needed to try things and see them — fully groomed, simulated, lit and comped — not against bare animation playblasts. Historically that meant multi-week handoffs through CFX, Groom, Lighting and Comp. To make the vittra work, we had to bring that loop down to overnight.</p>
       </div>
 
       <!-- RONJA WORK -->
@@ -134,7 +150,7 @@
           <p class="show-img-cap">Queen Harpy · Ronja, the Robber's Daughter · VFX by Important Looking Pirates</p>
         </div>
 
-        <p class="prose">Led the full technical lifecycle of the Queen Harpy: reference gathering, lookdev and shading, feather grooming, muscle setup, and feather simulation. Pipeline automation via Job Chain reduced the groom-to-render loop to a single ShotGrid action for animators.</p>
+        <p class="prose">Owned the technical lifecycle of the vittra — reference, lookdev and shading, feather grooming, muscle setup, feather simulation, and the automation that pulled the whole pipeline together.</p>
 
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px;">
           <div class="show-img-wrap" style="margin: 0;">
@@ -147,12 +163,57 @@
           </div>
         </div>
 
-        <p class="prose" style="margin-top: 20px;">Also: VES member and on the 2026 VES Awards Nomination Panel.</p>
+        <h3 style="font-family: var(--font-display); font-size: 22px; font-weight: 700; color: var(--ink); margin-top: 36px; margin-bottom: 6px;">Generate Groom</h3>
+        <p class="prose">The big technical piece on the show was a tool I built called <strong>Generate Groom</strong> — a Job Chain workflow animators triggered straight from ShotGrid against any of their animation versions. Submit, choose options, walk away.</p>
+
+        <figure style="margin: 24px auto 0; max-width: 460px; border: 1px solid var(--rule); background: var(--bg-card);">
+          <img src="assets/images/cfx-groom-pipeline/cfx-groom-pipeline.png" alt="Generate Groom — ShotGrid version selection UI" style="width: 100%; display: block;">
+          <figcaption style="padding: 8px 12px; font-size: 11px; color: var(--ink-light); border-top: 1px solid var(--rule); letter-spacing: 0.04em;">Generate Groom UI — ShotGrid version selection and shot options</figcaption>
+        </figure>
+
+        <p class="prose" style="margin-top: 22px;">Underneath, the chain ran end to end:</p>
+
+        <div class="feature-grid" style="margin-top: 16px;">
+          <div class="feature">
+            <div class="feature-name">1 · Pull animation</div>
+            <p class="feature-desc">The chosen animation version is resolved from context and brought into the groom workfile.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">2 · Generate groom</div>
+            <p class="feature-desc">Feather grooming runs against the deformed mesh. Closeup option swaps in higher-detail groom presets when needed.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">3 · Simulate</div>
+            <p class="feature-desc">Feather and muscle simulation runs. A bypass option swaps the dynamic sim for a simple deform when the secondaries are misbehaving on a shot.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">4 · Light</div>
+            <p class="feature-desc">Result is brought into a lighting scene with the show's light template applied, then rendered.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">5 · Slap comp</div>
+            <p class="feature-desc">Renders are slap-comped in Nuke against the show's template comp and the plate, producing a reviewable image without manual setup.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">6 · Daily</div>
+            <p class="feature-desc">Published to ShotGrid and marked for review. Animator submits in the evening, reviews in the morning.</p>
+          </div>
+        </div>
+
+        <p class="prose" style="margin-top: 22px;">When a shot had multiple creatures, the system handled them in one submission: each character ran its own groom and simulation pass, then all of them were merged into a single lighting scene against the plate, lit and rendered together so the interactions read correctly, and slap-comped as one image. Animators iterated on creature interactions in context — not as separate single-character renders that had to be reassembled later. Some shots ran with up to fifty vittras in frame; the same submission handled them all.</p>
+
+        <figure style="margin: 20px auto 0; max-width: 720px; border: 1px solid var(--rule); background: var(--bg-card);">
+          <img src="assets/images/job-chain/vittra_nodes.png" alt="Multi-vittra Job Chain submission — one chain per character, all merged into one lighting scene" style="width: 100%; display: block;" class="zoomable" onclick="openLB(this)">
+          <figcaption style="padding: 8px 12px; font-size: 11px; color: var(--ink-light); border-top: 1px solid var(--rule); letter-spacing: 0.04em;">Multi-vittra setup — one chain per character, merged into a single lighting scene</figcaption>
+        </figure>
+
+        <p class="prose" style="margin-top: 14px;">It was the first time at the studio that the full CFX → Groom → Lighting → Comp loop was authored as a single automation. Animators went from depending on multi-department handoffs to iterating directly against fully simulated, lit, comped renders themselves. It has been used on every CFX show since.</p>
 
         <div class="tech-row" style="margin-top: 20px;">
           <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
           <span class="ti"><img src="assets/images/icons/python.svg" alt="">Python</span>
           <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Arnold</span>
+          <span class="ti">Nuke</span>
           <span class="ti">ShotGrid</span>
         </div>
 
@@ -162,7 +223,19 @@
           <span class="tag">Feather Sim</span>
           <span class="tag">Lookdev</span>
           <span class="tag">Job Chain</span>
+          <span class="tag">Generate Groom</span>
         </div>
+      </div>
+
+      <!-- THE TEAM -->
+      <div class="article-block">
+        <p class="block-label">The team</p>
+        <h2 class="block-heading">This win belongs to all of you</h2>
+        <hr class="block-rule">
+        <p class="prose">The Queen Harpy was never a one-person job. The real tribute goes to my three dads on stage with me — <a href="https://www.linkedin.com/in/niklas-wall%C3%A9n-863177159/" target="_blank">Niklas Wallén</a>, our concept artist, the vittra exists because he drew her; <a href="https://www.linkedin.com/in/nicklas-andersson-51797524b/" target="_blank">Nicklas Andersson</a>, who worked out the posing and the shape language that make her read at every angle, in every motion profile; and <a href="https://www.linkedin.com/in/gustav-ahr%C3%A9n-984656b/" target="_blank">Gustav Ahrén</a>, who handled the sculpting, modelling, blendshapes, and a huge part of the feather design itself.</p>
+        <p class="prose" style="margin-top: 14px;">A special thank-you to <a href="https://www.linkedin.com/in/martin-hernblad-03153253/" target="_blank">Martin Hernblad</a>, our show supervisor, for backing the work and giving the automation room to land; to <a href="https://www.linkedin.com/in/antonstattin/" target="_blank">Anton Stattin</a>, our rigger — the system the vittra rides on is his, and it held up under everything we threw at it; and to <a href="https://www.linkedin.com/in/jannes-kreyenberg-80958223a/" target="_blank">Jannes Kreyenberg</a>, who solved every FX problem the automation couldn't — the kind of work that doesn't show up in any tool but holds shots together.</p>
+        <p class="prose" style="margin-top: 14px;">So many incredible people who deserved to be on that stage too contributed to this character: <a href="https://www.linkedin.com/in/ckarlberg/" target="_blank">Christopher Karlberg</a>, <a href="https://www.linkedin.com/in/jenniefer-w-b5831019b/" target="_blank">Jenniefer W.</a> and <a href="https://www.linkedin.com/in/per-bergst%C3%A9n-9a917564/" target="_blank">Per Bergstén</a>. This win belongs to all of you.</p>
+        <p class="prose" style="margin-top: 14px;">Huge thanks to <a href="https://www.linkedin.com/company/important-looking-pirates-vfx/" target="_blank">Important Looking Pirates</a> as a whole — and a special shout-out to <a href="https://www.linkedin.com/in/tor-bj%C3%B6rn-olsson-bb52831/" target="_blank">Tor Björn Olsson</a> for being crazy enough to trust us with the vittra. And to the <a href="https://www.linkedin.com/company/visual-effects-society/" target="_blank">Visual Effects Society</a> for the evening itself; standing in that room is something I'll be carrying with me for a while.</p>
       </div>
 
       <!-- ALL CREDITS -->

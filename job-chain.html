@@ -18,7 +18,8 @@
   <link rel="stylesheet" href="assets/style.css">
   <style>
     /* DCC plugin row */
-    .dcc-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 28px 0; }
+    .dcc-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin: 28px 0; }
+    @media (max-width: 900px) { .dcc-row { grid-template-columns: repeat(2, 1fr); } }
     .dcc-card { background: var(--bg); padding: 26px 24px 22px; }
     .dcc-icon { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
     .dcc-icon img { width: 20px; height: 20px; }
@@ -46,7 +47,7 @@
     <a class="nav-back" href="index.html">← David Allan</a>
     <ul class="nav-links">
       <li><a href="index.html#projects">ILP Work</a></li>
-      <li><a href="index.html#personal">Personal</a></li>
+      <li><a href="credits.html">Credits</a></li>
       <li><a href="hdri-ml.html">HDRI ML</a></li>
       <li><a href="ves-award.html">Queen Harpy</a></li>
     </ul>
@@ -57,7 +58,7 @@
       <p class="breadcrumb"><a href="index.html">David Allan</a> / ILP Work / Job Chain</p>
       <h1 class="deep-title">Job Chain</h1>
       <p class="deep-sub">Pipeline Automation Framework · Python · ILP, 2022–2024</p>
-      <p class="deep-lede">I designed and built Job Chain at ILP. The first iteration shipped during Stranger Things Season 4 in 2022; it matured into the framework in its current form during Ronja, the Robber's Daughter in 2024. It's a node-based automation framework for VFX pipelines — workflows described as graphs of operations (open a workfile, set parameters, import a publish, run a sim, export, submit to the farm) that execute inside whichever DCC the work belongs to. The same chain definition runs in Houdini, Maya or Blender; the DCC-specific behaviour is provided by a software plugin layer underneath. Other TDs built tools and workflows on top of the framework as it became the studio's pipeline backbone.</p>
+      <p class="deep-lede">I designed and built Job Chain at ILP. The first iteration shipped during Stranger Things Season 4 in 2022; it matured into the framework in its current form during Ronja, the Robber's Daughter in 2024. It's a node-based automation framework for VFX pipelines — workflows described as graphs of operations (open a workfile, set parameters, import a publish, run a sim, export, submit to the farm) that execute inside whichever DCC the work belongs to. The same chain definition runs in Houdini, Maya, Blender or Nuke; the DCC-specific behaviour is provided by a software plugin layer underneath. Other TDs built tools and workflows on top of the framework as it became the studio's pipeline backbone.</p>
     </div>
   </div>
 
@@ -150,13 +151,43 @@
         <p class="prose" style="margin-top: 14px;">It was the first time at the studio that the full CFX → Groom → Lighting → Comp loop had been authored as one automation. CFX iteration moved from a multi-department, multi-week handoff to something animators triggered themselves and reviewed the next morning. The cost of trying things dropped by an order of magnitude. Used on every CFX show since.</p>
       </div>
 
+      <!-- IMPORT DEPENDENCY -->
+      <div class="article-block">
+        <p class="block-label">Authoring</p>
+        <h2 class="block-heading">Connection-based imports</h2>
+        <hr class="block-rule">
+        <p class="prose">The thing that makes Job Chain feel light to author is that connections <em>are</em> imports. Wire one node into the next and the downstream node picks up the upstream node's output automatically — no path, no context selector, no version pin. If a node's job is to bring its input into a scene, the input is whatever the node before it produced, full stop.</p>
+        <p class="prose" style="margin-top: 14px;">Each process plugin declares what it outputs as part of its abstract contract. A <code>Sim</code> step outputs a cache; an <code>Output</code> step outputs renders or geometry; a <code>Save</code> step outputs the saved workfile. Downstream nodes that consume an input — <code>Import Publish</code>, <code>Merge Workfile</code>, the slap-comp step, the daily — read the upstream output directly off the connection. The chain itself is the dependency graph.</p>
+        <p class="prose" style="margin-top: 14px;">In practice this means most of the chain is just wires. A groom file that needs the latest CFX cache doesn't ask <em>which</em> cache; it imports whatever the upstream sim node produced. A lighting node downstream of the groom doesn't reach into ShotGrid for the latest groom version; it imports the upstream groom node's output. A slap-comp node at the end of the chain doesn't need to know where the renders ended up; it picks them up from the render node it's wired to. Move a node, swap a node, branch off mid-chain — the dependencies follow the graph.</p>
+        <p class="prose" style="margin-top: 14px;">Explicit paths and version pins are still available for the cases where a chain genuinely needs to import something <em>not</em> produced upstream — a fixed published asset, a one-off external file. But for the canonical case of "this node's input is the previous node's output", the connection alone is enough.</p>
+
+        <div class="feature-grid" style="margin-top: 28px;">
+          <div class="feature">
+            <div class="feature-name">Connections are imports</div>
+            <p class="feature-desc">A wire between two nodes carries the upstream output into the downstream node. No path, no context, no version selector — the connection is the dependency.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Outputs declared in the contract</div>
+            <p class="feature-desc">Each process plugin declares its output type as part of its abstract contract. Sims output caches; outputs output renders; saves output workfiles. Downstream nodes pick the right one off the connection.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Authoring stays light</div>
+            <p class="feature-desc">Most of a chain is just wires. Move a node, swap a node, branch off mid-chain — the dependency graph follows the connections automatically.</p>
+          </div>
+          <div class="feature">
+            <div class="feature-name">Explicit paths still available</div>
+            <p class="feature-desc">For the cases where a chain needs an input that isn't produced upstream — a fixed published asset, a one-off external file — explicit path and context selectors remain on the node.</p>
+          </div>
+        </div>
+      </div>
+
       <!-- ARCHITECTURE -->
       <div class="article-block">
         <p class="block-label">Architecture</p>
         <h2 class="block-heading">Process plugins and software plugins</h2>
         <hr class="block-rule">
         <p class="prose">The core idea is a two-layer plugin system. <strong>Process plugins</strong> describe <em>what</em> needs to happen — abstractly. <code>Open</code>, <code>Save</code>, <code>Output</code>, <code>HandleParameters</code>, <code>ImportPublish</code>, <code>SceneBreakdown</code> and so on are all process plugins. They define a contract: signature, parameters, input expectations, return values. They contain no DCC-specific code.</p>
-        <p class="prose" style="margin-top: 14px;"><strong>Software plugins</strong> provide the <em>how</em>. Each DCC — Houdini, Maya, Blender — has its own software plugin, and that plugin overrides each process plugin with the equivalent DCC-specific implementation. <code>Open</code> in the Houdini plugin opens an HIP file; in the Maya plugin it opens a Maya scene; in the Blender plugin it opens a .blend. The chain definition does not change.</p>
+        <p class="prose" style="margin-top: 14px;"><strong>Software plugins</strong> provide the <em>how</em>. Each DCC — Houdini, Maya, Blender, Nuke — has its own software plugin, and that plugin overrides each process plugin with the equivalent DCC-specific implementation. <code>Open</code> in the Houdini plugin opens an HIP file; in the Maya plugin it opens a Maya scene; in the Blender plugin it opens a .blend; in the Nuke plugin it opens an .nk script. The chain definition does not change.</p>
         <p class="prose" style="margin-top: 14px;">At runtime, an executor picks up a node, looks up the active software plugin for the session, and dispatches each process call through it. The process plugin and the software plugin meet at the override; the rest of the chain — graph traversal, dependency resolution, context handling, fallback logic — stays the same regardless of where the work happens to land.</p>
         <p class="prose" style="margin-top: 14px;">Because the process layer is abstract, a chain can be authored, inspected, modified and submitted without the target DCC being open at all. The DCC only enters the picture when a node actually executes — and on the farm, that means a fresh, deterministic session every time.</p>
 
@@ -196,7 +227,7 @@
         <p class="block-label">Software plugin layer</p>
         <h2 class="block-heading">Supported DCCs</h2>
         <hr class="block-rule">
-        <p class="prose">Houdini, Maya and Blender. Each has a software plugin that implements every process; the same chain definition runs identically in all three.</p>
+        <p class="prose">Houdini, Maya, Blender and Nuke. Each has a software plugin that implements every process; the same chain definition runs identically in all four. Nuke is what closes the loop on slap comps — when a chain ends in a render, the Nuke software plugin picks the output up, drops it into the show's template comp and writes the reviewable image. Without Nuke as a first-class DCC, the comp step would always be a manual handoff.</p>
 
         <div class="dcc-row">
           <div class="dcc-card">
@@ -219,6 +250,13 @@
               <div class="dcc-name">Blender</div>
             </div>
             <p class="dcc-desc">Full process parity.</p>
+          </div>
+          <div class="dcc-card">
+            <div class="dcc-icon">
+              <img src="assets/images/icons/nuke.svg" alt="">
+              <div class="dcc-name">Nuke</div>
+            </div>
+            <p class="dcc-desc">Slap-comp authoring and render integration. Powers the Auto Slap step at the end of every chain that produces images.</p>
           </div>
         </div>
       </div>
@@ -395,6 +433,7 @@
           <span class="ti"><img src="assets/images/icons/houdini.svg" alt="">Houdini</span>
           <span class="ti"><img src="assets/images/icons/autodesk.svg" alt="">Maya</span>
           <span class="ti"><img src="assets/images/icons/blender.svg" alt="">Blender</span>
+          <span class="ti"><img src="assets/images/icons/nuke.svg" alt="">Nuke</span>
           <span class="ti"><img src="assets/images/icons/shotgrid.svg" alt="">ShotGrid</span>
           <span class="ti">YAML</span>
           <span class="ti">Render Farm (Monster)</span>

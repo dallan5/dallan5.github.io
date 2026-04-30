@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Credits — David Allan</title>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://dallan5.github.io/credits.html">
+  <meta property="og:title" content="Credits — David Allan">
+  <meta property="og:description" content="Full production credits — episodic and feature VFX work at Important Looking Pirates, 2017–2025.">
+  <meta property="og:image" content="https://dallan5.github.io/assets/images/ves/ronja-creature-d.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="description" content="Full production credits — episodic and feature VFX work at Important Looking Pirates, 2017–2025.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/style.css">
+  <style>
+    /* Credits list */
+    .credits-list { list-style: none; }
+    .credit-row { display: flex; gap: 18px; padding: 18px 0; border-bottom: 1px solid var(--rule); align-items: flex-start; scroll-margin-top: 90px; }
+    .credit-row:first-child { border-top: 1px solid var(--rule); }
+    .credit-row:target { background: var(--bg-card); }
+    .credit-year { font-size: 11px; font-weight: 600; letter-spacing: 0.1em; color: var(--ink-light); min-width: 44px; padding-top: 2px; }
+    .credit-thumb { flex: 0 0 80px; aspect-ratio: 2/3; overflow: hidden; background: var(--bg-card); border: 1px solid var(--rule); }
+    .credit-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; filter: grayscale(18%) brightness(0.97); }
+    .credit-info { flex: 1; min-width: 0; }
+    .credit-name { font-family: var(--font-display); font-size: 19px; font-weight: 700; color: var(--ink); margin-bottom: 2px; line-height: 1.25; }
+    .credit-name a { color: inherit; text-decoration: none; border-bottom: 1px solid var(--rule); }
+    .credit-name a:hover { border-color: var(--ink); }
+    .credit-role { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-light); margin-bottom: 6px; }
+    .credit-note { font-size: 13.5px; color: var(--ink-mid); line-height: 1.6; }
+    .badge-sm { display: inline-block; font-size: 9px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; background: var(--ink); color: var(--bg); padding: 2px 7px; margin-right: 6px; vertical-align: middle; }
+    .badge-win { background: var(--ink); color: var(--bg); }
+
+    @media (max-width: 560px) {
+      .credit-row { gap: 12px; padding: 14px 0; }
+      .credit-thumb { flex-basis: 60px; }
+      .credit-name { font-size: 17px; }
+      .credit-note { font-size: 13px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a class="nav-back" href="index.html">← David Allan</a>
+    <ul class="nav-links">
+      <li><a href="index.html#work">Work</a></li>
+      <li><a href="index.html#projects">ILP Work</a></li>
+      <li><a href="job-chain.html">Job Chain</a></li>
+      <li><a href="ves-award.html">Queen Harpy</a></li>
+      <li><a href="hdri-ml.html">HDRI ML</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="deep-hero">
+    <div class="wrap">
+      <p class="breadcrumb"><a href="index.html">David Allan</a> / Credits</p>
+      <h1 class="deep-title">Credits</h1>
+      <p class="deep-sub">Important Looking Pirates · 2017–2025</p>
+      <p class="deep-lede">Episodic and feature VFX work across eight years at ILP — first as a Lighting TD on hero shots, then as a CG Technical Director on creature builds and pipeline systems. Each entry below is what I actually shipped on the show.</p>
+    </div>
+  </div>
+
+  <div class="article">
+    <div class="wrap">
+
+      <ul class="credits-list">
+
+        <li class="credit-row" id="ronja">
+          <span class="credit-year">2024</span>
+          <div class="credit-thumb"><img src="assets/images/credits/ronja.jpg" alt="Ronja, the Robber's Daughter"></div>
+          <div class="credit-info">
+            <div class="credit-name"><span class="badge-sm badge-win">VES Win</span><a href="ves-award.html">Ronja, the Robber's Daughter</a></div>
+            <div class="credit-role">CG Technical Director / Groom Artist · ILP</div>
+            <p class="credit-note">Built the Queen Harpy end-to-end — feather grooming, muscle and feather simulation, full lookdev. Authored the show's Generate Groom automation: a single ShotGrid action that ran groom, sim, lighting and slap-comp through Job Chain so animators could iterate on fully-rendered creature shots overnight. 2025 VES Award winner — Outstanding Character in an Episode. <a href="ves-award.html">Full breakdown →</a></p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="lastofus">
+          <span class="credit-year">2025</span>
+          <div class="credit-thumb"><img src="assets/images/credits/last-of-us.jpg" alt="The Last of Us"></div>
+          <div class="credit-info">
+            <div class="credit-name">The Last of Us, Season 2</div>
+            <div class="credit-role">CG Technical Director · ILP</div>
+            <p class="credit-note">Creature effects, automation and pipeline development on the Bloater — muscle, fascia and skin-sliding setup, groom integration, and the Job Chain workflows that handed the character off through CFX, lighting and comp.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="predator">
+          <span class="credit-year">2025</span>
+          <div class="credit-thumb"><img src="assets/images/credits/predator-badlands.jpg" alt="Predator: Badlands"></div>
+          <div class="credit-info">
+            <div class="credit-name">Predator: Badlands</div>
+            <div class="credit-role">Pipeline TD · ILP</div>
+            <p class="credit-note">Pipeline automation work on the show — extended Job Chain's ShotGrid integration so the CFX team could submit simulation chains directly from a ShotGrid action. No artist had to leave their tracker to dispatch a sim; the chain ran end-to-end on the farm.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="indiana">
+          <span class="credit-year">2023</span>
+          <div class="credit-thumb"><img src="assets/images/credits/indiana-jones.jpg" alt="Indiana Jones and the Dial of Destiny"></div>
+          <div class="credit-info">
+            <div class="credit-name">Indiana Jones and the Dial of Destiny</div>
+            <div class="credit-role">Groom &amp; CFX TD · ILP</div>
+            <p class="credit-note">Full grooming and hair-simulation pipeline for character work on the show. Built the cross-department handoff automation — the chains that took a CFX cache, ran groom against it, and published cleanly into lighting — so character versions moved through the pipeline without manual stitching at every step.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="strangerthings">
+          <span class="credit-year">2022</span>
+          <div class="credit-thumb"><img src="assets/images/credits/stranger-things.jpg" alt="Stranger Things"></div>
+          <div class="credit-info">
+            <div class="credit-name"><span class="badge-sm">VES Nom.</span>Stranger Things, Season 4</div>
+            <div class="credit-role">CG Technical Director · ILP</div>
+            <p class="credit-note">Built the technical CFX setup for the Demogorgon and Demodogs — muscle, fascia and skin-sliding systems running at production scale across multiple VES-nominated episodes (Outstanding Visual Effects). The first show to run on the Job Chain framework: the CFX-to-lighting handoff was authored as automation so lighters could focus on shots, not setup. Authored and shipped the early Job Chain processes that the rest of the studio's pipeline grew on top of.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="slumberland">
+          <span class="credit-year">2022</span>
+          <div class="credit-thumb"><img src="assets/images/credits/slumberland.jpg" alt="Slumberland"></div>
+          <div class="credit-info">
+            <div class="credit-name">Slumberland</div>
+            <div class="credit-role">ILP</div>
+            <p class="credit-note">CFX and groom support work on the feature.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="sandman">
+          <span class="credit-year">2022</span>
+          <div class="credit-thumb"><img src="assets/images/credits/sandman.jpg" alt="The Sandman"></div>
+          <div class="credit-info">
+            <div class="credit-name">The Sandman</div>
+            <div class="credit-role">Groom &amp; CFX TD · ILP</div>
+            <p class="credit-note">Groom and CFX pipeline work across the series — character grooms, multi-character cache management, and the publishing chains that moved them through into lighting.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="battlefield">
+          <span class="credit-year">2021</span>
+          <div class="credit-thumb"><img src="assets/images/credits/battlefield-2042.jpg" alt="Battlefield 2042: Exodus"></div>
+          <div class="credit-info">
+            <div class="credit-name">Battlefield 2042: Exodus</div>
+            <div class="credit-role">Pipeline TD · ILP</div>
+            <p class="credit-note">TD-tools work on the launch cinematic. Built <strong>Populate Scene</strong> — a tool that pulled crowds and assets directly into lighting scenes without manual per-shot setup — and shipped the show's groom and caching tools, in line with the systems used on other CFX shows. Procedural modelling work on the cinematic's signature droplet effects.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="farcry">
+          <span class="credit-year">2021</span>
+          <div class="credit-thumb"><img src="assets/images/credits/far-cry-6.jpg" alt="Far Cry 6: Chicharron Run"></div>
+          <div class="credit-info">
+            <div class="credit-name">Far Cry 6: Chicharron Run</div>
+            <div class="credit-role">Groom &amp; Pipeline TD · ILP</div>
+            <p class="credit-note">Technical lead on the feather grooming for the cinematic — every character, every feather, owning the technical groom setup end-to-end and making sure it held up across the show. Owned the caching and fetching pipeline for character data through the rest of the production. Also shipped <strong>Populate Scene</strong> (the same crowd/asset-into-lighting tool used on Battlefield 2042) and the show's groom and caching tools.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="mandalorian">
+          <span class="credit-year">2020</span>
+          <div class="credit-thumb"><img src="assets/images/credits/mandalorian.jpg" alt="The Mandalorian"></div>
+          <div class="credit-info">
+            <div class="credit-name">Star Wars: The Mandalorian, Season 2</div>
+            <div class="credit-role">Lighting TD / 3D Generalist · ILP</div>
+            <p class="credit-note">Hero creature lighting and lookdev across 4 episodes, including the Cyclops — direct/indirect light balance, character integration into plate environments, and continuity across the season's creature beats. Environment work, 3D modelling and tool development on the side.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="westworld">
+          <span class="credit-year">2020</span>
+          <div class="credit-thumb"><img src="assets/images/credits/westworld.jpg" alt="Westworld"></div>
+          <div class="credit-info">
+            <div class="credit-name">Westworld, Season 3</div>
+            <div class="credit-role">Lighting TD · ILP</div>
+            <p class="credit-note">Hero lighting on Dolores across HBO's flagship sci-fi series — character integration into complex environment plates, holding mood and continuity across the season's hero sequences.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="lostinspace">
+          <span class="credit-year">2019</span>
+          <div class="credit-thumb"><img src="assets/images/credits/lost-in-space.jpg" alt="Lost in Space"></div>
+          <div class="credit-info">
+            <div class="credit-name">Lost in Space, Season 2</div>
+            <div class="credit-role">Lighting TD — Hero Environments · ILP</div>
+            <p class="credit-note">Hero environment lighting across the full season (10 episodes) — large-scale water sims, atmospherics and volumetrics, and cinematic sequence lighting. Owned the look from layout through final picture, designing setups that held mood and continuity across long sequences.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="carnivalrow">
+          <span class="credit-year">2019</span>
+          <div class="credit-thumb"><img src="assets/images/credits/carnival-row.jpg" alt="Carnival Row"></div>
+          <div class="credit-info">
+            <div class="credit-name">Carnival Row, Season 1</div>
+            <div class="credit-role">Lighting TD · ILP</div>
+            <p class="credit-note">Hero shot lighting across the season — character and environment lighting on Amazon's fantasy series, holding mood and continuity through the show's signature gas-lit, painterly look.</p>
+          </div>
+        </li>
+
+        <li class="credit-row" id="jurassicworld">
+          <span class="credit-year">2018</span>
+          <div class="credit-thumb"><img src="assets/images/credits/jurassic-world.png" alt="Jurassic World: Fallen Kingdom"></div>
+          <div class="credit-info">
+            <div class="credit-name">Jurassic World: Fallen Kingdom</div>
+            <div class="credit-role">Lighting / Lookdev / Environment · ILP</div>
+            <p class="credit-note">Lighting, lookdev and environment work on creature and environment-driven sequences — direct/indirect light balance and continuity across creature scenes. 3D modelling, environment building and tool development alongside the shot work.</p>
+          </div>
+        </li>
+
+      </ul>
+
+    </div>
+  </div>
+
+  <div class="wrap">
+    <div class="page-nav">
+      <a href="index.html" class="pnav-link">← Home</a>
+      <a href="ves-award.html" class="pnav-link">Queen Harpy →</a>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-name">David Allan</span>
+    <span>Technical Director · VES Award Winner</span>
+    <span><a href="mailto:david.pal.allan@gmail.com" style="color: inherit;">david.pal.allan@gmail.com</a></span>
+  </footer>
+
+</body>
+</html>
